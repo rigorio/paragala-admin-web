@@ -7,12 +7,23 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-title>menu</ion-title>
+    <ion-title>Paragala</ion-title>
   </ion-navbar>
 
 </ion-header>
 
 
 <ion-content padding>
+  <ion-card class="cards-list-demo">
+    <ion-card-header>
+      Categories
+    </ion-card-header>
 
+    <ion-list>
+      <button ion-item *ngFor="let category of categs" (click)="itemTapped($event, category)">
+        {{ category }}
+      </button>
+
+    </ion-list>
+  </ion-card>
 </ion-content>

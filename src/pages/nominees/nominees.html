@@ -15,4 +15,62 @@
 
 <ion-content padding>
 
+  <ion-item class="sizer">
+    <ion-label>Category</ion-label>
+    <ion-select [(ngModel)]="category">
+      <ion-option *ngFor="let c of categories">{{c}}</ion-option>
+    </ion-select>
+  </ion-item>
+  <ion-item class="sizer">
+    <ion-label color="norm-green" floating>Title</ion-label>
+    <ion-input [(ngModel)]="title"></ion-input>
+  </ion-item>
+  <ion-item class="sizer">
+    <ion-label color="norm-green" floating>Company</ion-label>
+    <ion-input [(ngModel)]="company"></ion-input>
+  </ion-item>
+
+  <button color="light-green" ion-button (click)="createNominee()">Create Nominee</button>
+
+  <ion-grid>
+    <ion-row>
+      <ion-col>
+        <b>
+          Category
+        </b>
+      </ion-col>
+      <ion-col>
+        <b>
+          Title
+        </b>
+      </ion-col>
+      <ion-col>
+        <b>
+          Company
+        </b>
+      </ion-col>
+      <ion-col>
+
+      </ion-col>
+    </ion-row>
+    <ion-row class="nominees" *ngFor="let nominee of nominees">
+      <ion-col>
+        {{ nominee.category }}
+      </ion-col>
+      <ion-col>
+        {{ nominee.title }}
+      </ion-col>
+      <ion-col>
+        {{ nominee.company }}
+      </ion-col>
+      <ion-col>
+        <button class="delete" (click)="delete(nominee.id)" ion-button color="danger" clear icon-only>
+          <ion-icon name='trash'></ion-icon>
+        </button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <button color="light-green" ion-button (click)="addNominees()">Add All Nominees</button>
+
 </ion-content>

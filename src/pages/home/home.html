@@ -1,14 +1,11 @@
 <ion-header>
   <ion-navbar>
-    <ion-title>
-      Ionic Blank
-    </ion-title>
+    <button class="but" ion-button color="light-green" *ngFor="let p of pages" (click)="openPage(p)">
+      {{p.title}}
+    </button>
   </ion-navbar>
 </ion-header>
 
 <ion-content padding>
-  The world is your oyster.
-  <p>
-    If you get lost, the <a href="http://ionicframework.com/docs/v2">docs</a> will be your guide.
-  </p>
+  <img src="../../assets/imgs/logo.png" height='600' width='600'>
 </ion-content>

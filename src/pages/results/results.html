@@ -14,5 +14,57 @@
 
 
 <ion-content padding>
+  <ion-item class="filter">
+    <ion-label>Category</ion-label>
+    <ion-select interface="popover" [(ngModel)]="category" (ngModelChange)="changeCategory(category)" name="category">
+      <ion-option *ngFor="let c of categories">{{ c }}</ion-option>
+    </ion-select>
+  </ion-item>
+  <ion-item class="filter">
+    <ion-label>School</ion-label>
+    <ion-select interface="popover" [(ngModel)]="school">
+      <ion-option *ngFor="let s of schools">{{ s }}</ion-option>
+    </ion-select>
+  </ion-item>
+
+
+  <ion-grid>
+    <ion-row>
+      <ion-col>
+        <b>
+          Category
+        </b>
+      </ion-col>
+      <ion-col>
+        <b>
+          Title
+        </b>
+      </ion-col>
+      <ion-col>
+        <b>
+          Company
+        </b>
+      </ion-col>
+      <ion-col>
+        <b>
+          Tally
+        </b>
+      </ion-col>
+    </ion-row>
+    <ion-row *ngFor="let result of results">
+      <ion-col>
+        {{ result.category }}
+      </ion-col>
+      <ion-col>
+        {{ result.title }}
+      </ion-col>
+      <ion-col>
+        {{ result.company }}
+      </ion-col>
+      <ion-col>
+        {{ result.tally }}
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 
 </ion-content>

@@ -1,25 +1,44 @@
-import { BrowserModule } from '@angular/platform-browser';
-import { ErrorHandler, NgModule } from '@angular/core';
-import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
-import { SplashScreen } from '@ionic-native/splash-screen';
-import { StatusBar } from '@ionic-native/status-bar';
+import {BrowserModule} from '@angular/platform-browser';
+import {ErrorHandler, NgModule} from '@angular/core';
+import {IonicApp, IonicErrorHandler, IonicModule} from 'ionic-angular';
+import {SplashScreen} from '@ionic-native/splash-screen';
+import {StatusBar} from '@ionic-native/status-bar';
 
-import { MyApp } from './app.component';
-import { HomePage } from '../pages/home/home';
+import {IonicStorageModule} from "@ionic/storage";
+import {HttpClientModule} from "@angular/common/http";
+import {MyApp} from './app.component';
+import {HomePage} from '../pages/home/home';
+import {NomineesPage} from "../pages/nominees/nominees";
+import {ResultsPage} from "../pages/results/results";
+import {VotersPage} from "../pages/voters/voters";
+import {AdminPage} from "../pages/admin/admin";
+import {LoginPage} from "../pages/login/login";
 
 @NgModule({
   declarations: [
     MyApp,
-    HomePage
+    LoginPage,
+    HomePage,
+    NomineesPage,
+    ResultsPage,
+    VotersPage,
+    AdminPage
   ],
   imports: [
     BrowserModule,
-    IonicModule.forRoot(MyApp)
+    HttpClientModule,
+    IonicModule.forRoot(MyApp),
+    IonicStorageModule.forRoot()
   ],
   bootstrap: [IonicApp],
   entryComponents: [
     MyApp,
-    HomePage
+    LoginPage,
+    HomePage,
+    NomineesPage,
+    ResultsPage,
+    VotersPage,
+    AdminPage
   ],
   providers: [
     StatusBar,
@@ -27,4 +46,5 @@ import { HomePage } from '../pages/home/home';
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]
 })
-export class AppModule {}
+export class AppModule {
+}
