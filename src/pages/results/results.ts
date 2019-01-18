@@ -40,24 +40,25 @@ export class ResultsPage {
     this.categories = [];
     this.schools = [];
 
-    this.storage.get("paragala-token").then(token => {
-      console.log(token);
-      this.tokenContainer.push(token);
-    }).catch(yabai => {
-    });
-    this.map.set("token", this.tokenContainer[0]);
 
-    this.getToken().then(token=>{
-      let url = this.host + "/api/data/schools?token=" + token;
-      this.http.get<Response>(url).pipe().toPromise().then(response=>{
-        this.schools = response.message
-      });
+    let schoolUrl = this.host + "/api/data/schools";
+    this.http.get<Response>(schoolUrl).pipe().toPromise().then(response => {
+      console.log(response.status);
+      this.schools = response.message
     });
-    this.getToken().then(token=>{
-      let url = this.host + "/api/data/categories?token=" + token;
-       this.http.get<Response>(url).pipe().toPromise().then(response=>{
-        this.categories = response.message
-      });
+
+    let cateUrl = this.host + "/api/data/categories";
+    this.http.get<Response>(cateUrl).pipe().toPromise().then(response => {
+      console.log(response.status);
+      this.categories = response.message
+    });
+
+    this.getToken().then(token => {
+      let url = this.host + "/api/results/tally?token=" + token;
+      this.http.get<Response>(url).pipe().toPromise().then(response => {
+        console.log(response.status);
+        this.results = response.message;
+      })
     });
 
     this.categories.push("All");
@@ -71,15 +72,24 @@ export class ResultsPage {
 
   changeCategory(category: string) {
     if (category === "All") {
-      this.getToken().then(token=>{
-        let url = this.host + "/api/data/categories?token=" + token;
-        this.http.get<Response>(url).pipe().toPromise().then(response=>{
-          this.categories = response.message
-        });
+      this.getToken().then(token => {
+        let url = this.host + "/api/results/tally?token=" + token;
+        this.http.get<Response>(url).pipe().toPromise().then(response => {
+          console.log(response.status);
+          this.results = response.message;
+        })
       });
       return;
     }
     console.log(category);
-    this.results = this.results.filter(result => result.category === category);
+
+    this.getToken().then(token => {
+      let url = this.host + "/api/results/tally?token=" + token;
+      this.http.get<Response>(url).pipe().toPromise().then(response => {
+        console.log(response.status);
+        this.results = response.message;
+        this.results = this.results.filter(result => result.category === category);
+      });
+    });
   }
 }

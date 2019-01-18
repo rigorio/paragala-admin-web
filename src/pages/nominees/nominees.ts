@@ -19,6 +19,7 @@ import {TSMap} from "typescript-map";
   templateUrl: 'nominees.html',
 })
 export class NomineesPage {
+
   ionViewDidLoad() {
     console.log('ionViewDidLoad NomineesPage');
   }
@@ -29,7 +30,6 @@ export class NomineesPage {
   company: any;
   nominees: Array<{ id: number, title: string, company: string, category: string }>;
   host = "http://localhost:8080";
-  tokenContainer: string[] = [];
 
   map = new Map();
 
@@ -41,85 +41,73 @@ export class NomineesPage {
     this.nominees = [];
     this.categories = [];
 
-    this.storage.get("paragala-token").then(token => {
-      console.log(token);
-      this.tokenContainer.push(token);
-    }).catch(yabai => {
-    });
-    this.map.set("token", this.tokenContainer[0]);
 
-    this.getCategories().subscribe((categories: Response) => {
-      this.categories = categories['message'];
-    });
-    this.updateNominees();
+      // let host = "https://murmuring-earth-96219.herokuapp.com/api/data/categories";
+      let cateUrl = this.host + "/api/data/categories";
+      this.http.get<Response>(cateUrl).pipe().toPromise().then(response => {
+        this.categories = response.message;
+      });
+
+      let nomineeUrl = this.host + "/api/data/nominees";
+      this.http.get<Response>(nomineeUrl).pipe().toPromise().then(response => {
+        this.nominees = response.message;
+      });
+
 
   }
 
   createNominee() {
-    this.addNominees().subscribe((response: Response) => {
-      console.log(response);
+    this.getToken().then(token => {
+      let nominee: Array<{ title: string, company: string, category: string }> = [];
+      nominee.push({
+        title: this.title,
+        company: this.company,
+        category: this.category
+      });
+
+      let message = JSON.stringify(nominee);
+
+      const httpOptions = {
+        headers: new HttpHeaders({
+          'Content-Type': 'application/json'
+        })
+      };
+
+      let url = this.host + "/api/data/nominees?token=" + token;
+      this.http.post<Response>(url, message, httpOptions).pipe().toPromise().then(response => {
+        this.nominees = response.message;
+      });
     });
-    this.updateNominees();
-  }
 
-  private addNominees() {
-    let nominee: Array<{ title: string, company: string, category: string }> = [];
-    nominee.push({
-      title: this.title,
-      company: this.company,
-      category: this.category
-    });
 
-    let message = JSON.stringify(nominee);
-
-    const httpOptions = {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json'
-      })
-    };
-
-    let url = this.host + "/api/data/nominees?token=" + this.map.get("token");
-    return this.http.post<Response>(url, message, httpOptions);
   }
 
   delete(id: any) {
-    this.deleteNominees(id).subscribe((response: Response) => {
-      console.log(response);
+    this.getToken().then(token => {
+      let url = this.host + "/api/data/nominees/" + id + "?token=" + token;
+      this.http.delete<Response>(url).pipe().toPromise().then(response => {
+        console.log(response.status + ":::" + response.message);
+      }).then(_ => {
+        let url = this.host + "/api/data/nominees";
+        this.http.get<Response>(url).pipe().toPromise().then(response => {
+          console.log(response.status);
+          this.nominees = response.message;
+        });
+      });
+    });
+  }
+
+  private getToken() {
+    return this.storage.get("paragala-token");
+  }
+
+  setDefaultNominees() {
+    this.getToken().then(token => {
+      this.http.get<Response>(this.host + "/api/data/defaults/nominees?token=" + token)
+        .pipe().toPromise().then(response => {
+        this.nominees = response.message;
+      })
     });
 
-    this.nominees = [];
-
-    this.updateNominees();
-    // this.nominees = this.nominees.filter(n => n.title !== title && n.category !== category);
   }
-
-  private deleteNominees(id: any) {
-
-    const httpOptions = {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json'
-      })
-    };
-
-    let url = this.host + "/api/data/nominees/" + id + "?token=" + this.map.get("token");
-    return this.http.delete<Response>(url, httpOptions);
-  }
-
-  private getNominees() {
-    let url = this.host + "/api/data/nominees?token=" + this.map.get("token");
-    return this.http.get<Response>(url);
-  }
-
-  private getCategories() {
-    // let host = "https://murmuring-earth-96219.herokuapp.com/api/data/categories";
-    let url = this.host + "/api/data/categories?token=" + this.map.get("token");
-    return this.http.get<Response>(url);
-  }
-
-  private updateNominees() {
-    this.getNominees().subscribe((response: Response) => {
-      this.nominees = response['message'];
-    })
-  }
-
 }

@@ -44,22 +44,17 @@ export class AdminPage {
     this.categories = [];
     this.schools = [];
 
-    this.getToken().then(token => {
-      let url = this.host + "/api/data/categories?token=" + token;
-      this.http.get<Response>(url).pipe().toPromise()
-        .then(response => {
-          this.categories = response.message;
-        });
-    });
+    let categoryUrl = this.host + "/api/data/categories";
+    this.http.get<Response>(categoryUrl).pipe().toPromise()
+      .then(response => {
+        this.categories = response.message;
+      });
 
-    this.getToken().then(token => {
-      let url = this.host + "/api/data/schools?token=" + token;
-      this.http.get<Response>(url).pipe().toPromise()
-        .then(response => {
-          this.categories = response.message;
-        });
-    });
-
+    let schoolUrl = this.host + "/api/data/schools";
+    this.http.get<Response>(schoolUrl).pipe().toPromise()
+      .then(response => {
+        this.schools = response.message;
+      });
 
   }
 
@@ -71,12 +66,6 @@ export class AdminPage {
    * TODO add prompt upon success
    */
   createAdmin() {
-    this.newAdmin().subscribe((response: Response) => {
-      console.log(response);
-    })
-  }
-
-  private newAdmin() {
     let tsMap = new TSMap();
 
     tsMap.set("email", this.email);
@@ -91,19 +80,18 @@ export class AdminPage {
       })
     };
 
-    let url = this.host + "/api/users?token=" + this.map.get("token");
-    return this.http.post<Response>(url, message, httpOptions);
+    this.getToken().then(token => {
+      let url = this.host + "/api/users?token=" + token;
+      this.http.post<Response>(url, message, httpOptions);
+    })
   }
-
-  // TODO delete categories and schools
-
 
   addCategory(keyCode: number) {
     if (keyCode == 13) {
       this.getToken().then(token => {
         let tsMap = new TSMap();
-        let message = tsMap.toJSON();
         tsMap.set("category", this.category);
+        let message = tsMap.toJSON();
 
         const httpOptions = {
           headers: new HttpHeaders({
@@ -111,16 +99,18 @@ export class AdminPage {
           })
         };
 
-        let url = this.host + "/api/data/category?token=" + token;
-        this.http.post<Response>(url, message, httpOptions).pipe().toPromise().then();
-
-        this.getToken().then(token => {
-          let url = this.host + "/api/data/categories?token=" + token;
+        let url = this.host + "/api/data/categories?token=" + token;
+        this.http.post<Response>(url, message, httpOptions).pipe().toPromise().then(response => {
+          console.log(response);
+        }).then(_ => {
+          let url = this.host + "/api/data/categories";
           this.http.get<Response>(url).pipe().toPromise()
             .then(response => {
+              console.log("refresh " + response);
               this.categories = response.message;
             });
         });
+
       })
 
     }
@@ -132,8 +122,8 @@ export class AdminPage {
 
       this.getToken().then(token => {
         let tsMap = new TSMap();
-        let message = tsMap.toJSON();
         tsMap.set("school", this.school);
+        let message = tsMap.toJSON();
 
         const httpOptions = {
           headers: new HttpHeaders({
@@ -144,14 +134,13 @@ export class AdminPage {
         let url = this.host + "/api/data/schools?token=" + token;
         this.http.post<Response>(url, message, httpOptions).pipe().toPromise().then(response => {
           console.log(response);
-        });
-        this.getToken().then(token => {
-          let url = this.host + "/api/data/schools?token=" + token;
+        }).then(_ => {
+          let url = this.host + "/api/data/schools";
           this.http.get<Response>(url).pipe().toPromise()
             .then(response => {
-              this.categories = response.message;
+              this.schools = response.message;
             });
-        });
+        })
       });
     }
   }
@@ -160,12 +149,12 @@ export class AdminPage {
   deleteCategory(c: string) {
 
     this.getToken().then(token => {
-      let url = this.host + "api/data/categories/" + c + "?token=" + token;
+      let url = this.host + "/api/data/categories/" + c + "?token=" + token;
+      console.log(url);
       this.http.delete<Response>(url).pipe().toPromise().then(response => {
         console.log(response);
-      });
-      this.getToken().then(token => {
-        let url = this.host + "/api/data/categories?token=" + token;
+      }).then(_ => {
+        let url = this.host + "/api/data/categories";
         this.http.get<Response>(url).pipe().toPromise()
           .then(response => {
             this.categories = response.message;
@@ -176,21 +165,37 @@ export class AdminPage {
 
   deleteSchool(s: string) {
     this.getToken().then(token => {
-      let url = this.host + "api/data/schools/" + s + "?token=" + token;
-      this.http.delete<Response>(url).pipe().toPromise().then(response => console.log(response.message));
-    });
-
-    this.getToken().then(token => {
-      let url = this.host + "/api/data/schools?token=" + token;
-      this.http.get<Response>(url).pipe().toPromise()
-        .then(response => {
-          this.categories = response.message;
-        });
+      let url = this.host + "/api/data/schools/" + s + "?token=" + token;
+      console.log(url);
+      this.http.delete<Response>(url).pipe().toPromise().then(response => {
+        console.log(response.message)
+      }).then(_ => {
+        let url = this.host + "/api/data/schools";
+        this.http.get<Response>(url).pipe().toPromise()
+          .then(response => {
+            this.schools = response.message;
+          });
+      });
     });
   }
 
   logout() {
     this.storage.remove("paragala-token");
     this.navCtrl.setRoot(LoginPage)
+  }
+
+  setDefaults() {
+    console.log("Setting default values for categories and schools...");
+    this.getToken().then(token => {
+      this.http.get<Response>(this.host + "/api/data/defaults/categories?token=" + token)
+        .pipe().toPromise().then(response => {
+        this.categories = response.message;
+      }).then(_ => {
+        this.http.get<Response>(this.host + "/api/data/defaults/schools?token=" + token)
+          .pipe().toPromise().then(response => {
+          this.schools = response.message;
+        })
+      })
+    });
   }
 }

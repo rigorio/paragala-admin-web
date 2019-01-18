@@ -15,4 +15,66 @@
 
 <ion-content padding>
 
+  <ion-item class="sizer">
+    <ion-label>School</ion-label>
+    <ion-select interface="popover" [(ngModel)]="school">
+      <ion-option *ngFor="let s of schools">{{ s }}</ion-option>
+    </ion-select>
+  </ion-item>
+
+  <ion-item class="sizer">
+    <ion-label color="norm-green" floating>Unique Id</ion-label>
+    <ion-input [(ngModel)]="uniqueId"></ion-input>
+  </ion-item>
+
+  <button color="light-green" ion-button (click)="addStudent()">Add Student</button>
+
+  <ion-grid>
+    <ion-row>
+      <ion-col>
+        <b>
+          School
+        </b>
+      </ion-col>
+      <ion-col>
+        <b>
+          Unique Id
+        </b>
+      </ion-col>
+      <ion-col>
+        <b>
+          Verified
+        </b>
+      </ion-col>
+      <ion-col>
+        <b>
+          Voted
+        </b>
+      </ion-col>
+      <ion-col>
+
+      </ion-col>
+    </ion-row>
+    <ion-row class="nominees" *ngFor="let student of students">
+      <ion-col>
+        {{ student.school }}
+      </ion-col>
+      <ion-col>
+        {{ student.uniqueId }}
+      </ion-col>
+      <ion-col>
+        {{ student.voterCode.length > 0 ? "Yes" : "No" }}
+      </ion-col>
+      <ion-col>
+        {{ student.eligible === true ? "No" : "Yes" }}
+      </ion-col>
+      <ion-col>
+        <button class="delete" (click)="delete(student.id)" ion-button color="danger" clear icon-only>
+          <ion-icon name='trash'></ion-icon>
+        </button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+
 </ion-content>
