@@ -26,8 +26,7 @@ export class ResultsPage {
   school: any;
   categories: string[];
   schools: string[];
-  host = "http://localhost:8080";
-  tokenContainer: string[] = [];
+  host = "https://murmuring-earth-96219.herokuapp.com";
   results: Array<{ title: string, company: string, tally: any, category: string }> = [];
 
   map = new Map();

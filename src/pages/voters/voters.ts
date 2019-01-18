@@ -22,7 +22,7 @@ export class VotersPage {
   schools: string[];
   students: Array<{ id: number, school: string, uniqueId: string, voterCode: string, eligible: boolean }> = [];
   uniqueId: any;
-  host = "http://localhost:8080"
+  host = "https://murmuring-earth-96219.herokuapp.com";
 
   constructor(public navCtrl: NavController,
               private storage: Storage,

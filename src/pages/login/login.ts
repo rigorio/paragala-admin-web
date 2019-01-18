@@ -17,7 +17,7 @@ export class LoginPage {
   mapRequest = new TSMap();
   map = new Map();
   // private host = "https://murmuring-earth-96219.herokuapp.com";
-  private host = "http://localhost:8080";
+  private host = "https://murmuring-earth-96219.herokuapp.com";
 
   constructor(public navCtrl: NavController,
               public navParams: NavParams,

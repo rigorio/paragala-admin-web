@@ -29,7 +29,7 @@ export class NomineesPage {
   title: any;
   company: any;
   nominees: Array<{ id: number, title: string, company: string, category: string }>;
-  host = "http://localhost:8080";
+  host = "https://murmuring-earth-96219.herokuapp.com";
 
   map = new Map();
 
