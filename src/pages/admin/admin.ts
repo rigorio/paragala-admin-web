@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {IonicPage, NavController, NavParams} from 'ionic-angular';
+import {AlertController, IonicPage, LoadingController, NavController, NavParams} from 'ionic-angular';
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {Storage} from "@ionic/storage";
 import {Response} from "../Response";
@@ -35,11 +35,16 @@ export class AdminPage {
   tokenContainer: string[] = [];
 
   private host = "https://murmuring-earth-96219.herokuapp.com";
+  startDate: string;
+  endDate: string;
 
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
               private storage: Storage,
-              private http: HttpClient) {
+              private alertCtrl: AlertController,
+              private http: HttpClient,
+              private loadingController: LoadingController,
+              private alertController: AlertController) {
 
     this.categories = [];
     this.schools = [];
@@ -66,6 +71,8 @@ export class AdminPage {
    * TODO add prompt upon success
    */
   createAdmin() {
+    let loading = this.loadingController.create({content: "Creating admin..."});
+    loading.present();
     let tsMap = new TSMap();
 
     tsMap.set("email", this.email);
@@ -80,9 +87,19 @@ export class AdminPage {
       })
     };
 
+    // TODO admin fix
     this.getToken().then(token => {
       let url = this.host + "/api/users?token=" + token;
-      this.http.post<Response>(url, message, httpOptions);
+      this.http.post<Response>(url, message, httpOptions).pipe().toPromise().then(response=> {
+        loading.dismissAll();
+        let alert = this.alertCtrl.create({
+          title: response['status'],
+          subTitle: response['message'],
+          buttons: ['Ok']
+        });
+        // add loading
+        alert.present();
+      });
     })
   }
 
@@ -197,5 +214,29 @@ export class AdminPage {
         })
       })
     });
+  }
+
+  setStartEnd() {
+    let loading = this.loadingController.create({content: "Setting voting period..."});
+
+    this.getToken().then(token => {
+
+      let map = new TSMap();
+      map.set('start', this.startDate.toString());
+      map.set('end', this.endDate.toString());
+      loading.present();
+      const httpOptions = {
+        headers: new HttpHeaders({
+          'Content-Type': 'application/json'
+        })
+      };
+
+      let message = map.toJSON();
+      this.http.post<Response>(this.host + "/api/date?token=" + token, message, httpOptions).pipe().toPromise().then(response => {
+        console.log(response);
+        loading.dismissAll();
+      })
+    })
+
   }
 }

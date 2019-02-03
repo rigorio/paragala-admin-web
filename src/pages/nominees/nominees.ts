@@ -30,6 +30,7 @@ export class NomineesPage {
   company: any;
   nominees: Array<{ id: number, title: string, company: string, category: string }>;
   host = "https://murmuring-earth-96219.herokuapp.com";
+  file: any;
 
   map = new Map();
 

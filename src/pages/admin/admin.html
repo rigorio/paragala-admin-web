@@ -37,7 +37,24 @@
       Logout
     </button>
   </div>
-  <button class="adminbutton" color="light-green" ion-button (click)="setDefaults()">Set Default Values</button>
+
+
+  <div class="date-time">
+
+    <ion-item>
+      <ion-label>MM DD YY</ion-label>
+      <ion-datetime [(ngModel)]="startDate" displayFormat="YYYY-MM-DDTHH:mm" placeholder="Select Date"></ion-datetime>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>MM DD YY</ion-label>
+      <ion-datetime [(ngModel)]="endDate" displayFormat="YYYY-MM-DDTHH:mm" placeholder="Select Date"></ion-datetime>
+    </ion-item>
+    <button class="adminbutton" color="light-green" ion-button (click)="setStartEnd()">Set Voting Period</button>
+
+  </div>
+
+  <button class="adminbutton" color="light-green" ion-button (click)="setDefaults()">Set Default Schools and Categories</button>
   <div class="add-category">
 
     <ion-col class="category">
@@ -78,4 +95,6 @@
 
     </ion-col>
   </div>
+
+
 </ion-content>

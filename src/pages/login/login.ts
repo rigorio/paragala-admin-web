@@ -1,8 +1,8 @@
 import {Component} from '@angular/core';
-import {AlertController, IonicPage, NavController, NavParams} from 'ionic-angular';
+import {AlertController, IonicPage, LoadingController, NavController, NavParams} from 'ionic-angular';
 import {TSMap} from "typescript-map"
 import {Storage} from "@ionic/storage";
-import {HttpClient, HttpErrorResponse, HttpHeaders} from "@angular/common/http";
+import {HttpClient, HttpErrorResponse, HttpHeaders, HttpResponse} from "@angular/common/http";
 import {Response} from "../Response"
 import {HomePage} from "../home/home";
 
@@ -23,7 +23,8 @@ export class LoginPage {
               public navParams: NavParams,
               private storage: Storage,
               private alertCtrl: AlertController,
-              private http: HttpClient) {
+              private http: HttpClient,
+              private loadingController: LoadingController) {
 
     storage.get("paragala-token").then(value => {
       console.log(value);
@@ -40,11 +41,15 @@ export class LoginPage {
   }
 
   login() {
+    let loading = this.loadingController.create({content: "Logging in..."});
+    loading.present();
     this.fetchLogin().subscribe(response => {
       if (response['status'] === "Logged In") {
         this.storage.set("paragala-token", response['message']);
+        loading.dismissAll();
         this.navCtrl.setRoot(HomePage);
       } else {
+        loading.dismissAll();
         let alert = this.alertCtrl.create({
           title: response['status'],
           subTitle: response['message'],

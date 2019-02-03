@@ -27,8 +27,24 @@
     <ion-input [(ngModel)]="uniqueId"></ion-input>
   </ion-item>
 
-  <button color="light-green" ion-button (click)="addStudent()">Add Student</button>
+  <ion-grid class="sizer">
+    <ion-row>
+      <ion-col>
+        <ion-item>
+          <ion-label id="profile_image" color="norm-green" stacked>Upload csv</ion-label>
+          <ion-input type="file"
+                     accept=".csv"
+                     (change)="selectFile($event)">Select File
+          </ion-input>
+        </ion-item>
+      </ion-col>
+      <ion-col class="upload">
+        <button color="light-green" ion-button (click)="uploadFile()">Upload File</button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 
+  <button color="light-green" ion-button (click)="addStudent()">Add Student</button>
   <ion-grid>
     <ion-row>
       <ion-col>

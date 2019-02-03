@@ -1,9 +1,10 @@
 import {Component} from '@angular/core';
-import {AlertController, IonicPage, NavController, NavParams} from 'ionic-angular';
+import {AlertController, IonicPage, LoadingController, NavController, NavParams} from 'ionic-angular';
 import {Storage} from "@ionic/storage";
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {Response} from "../Response";
 import {TSMap} from "typescript-map";
+import {Host} from "../Host";
 
 /**
  * Generated class for the VotersPage page.
@@ -23,12 +24,14 @@ export class VotersPage {
   students: Array<{ id: number, school: string, uniqueId: string, voterCode: string, eligible: boolean }> = [];
   uniqueId: any;
   host = "https://murmuring-earth-96219.herokuapp.com";
+  file: any;
 
   constructor(public navCtrl: NavController,
               private storage: Storage,
               private alertCtrl: AlertController,
               public navParams: NavParams,
-              private http: HttpClient) {
+              private http: HttpClient,
+              private loadingController: LoadingController) {
 
     this.getToken().then(token => {
       let url = this.host + "/api/voters?token=" + token;
@@ -43,9 +46,27 @@ export class VotersPage {
       })
     });
 
+  }
 
+  selectFile(event) {
+    console.log(event);
+    this.file = event.target.files[0];
+  }
 
+  uploadFile() {
+    let loading = this.loadingController.create({content: "Please wait..."});
+    loading.present();
 
+    this.getToken().then(token => {
+      let url = "http://localhost:8080" + "/api/voters/upload?school=" + this.school + "&token=" + token;
+      let formData = new FormData();
+      formData.append('file', this.file);
+      this.http.post(url, formData).pipe().toPromise().then(response => {
+        loading.dismissAll();
+        console.log(response);
+        this.students = response['message'];
+      });
+    });
 
   }
 

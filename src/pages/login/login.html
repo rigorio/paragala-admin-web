@@ -7,13 +7,17 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-title>login</ion-title>
+    <ion-title>Login</ion-title>
   </ion-navbar>
 
 </ion-header>
 
 
 <ion-content padding>
+
+
+  <div class="login">
+
   <ion-item>
     <ion-label color="norm-green" floating>Username</ion-label>
     <ion-input [(ngModel)]="username"></ion-input>
@@ -25,5 +29,6 @@
   </ion-item>
 
   <button color="light-green" ion-button (click)="login()">Login</button>
+  </div>
 
 </ion-content>
