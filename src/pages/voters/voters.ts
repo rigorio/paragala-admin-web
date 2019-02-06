@@ -74,7 +74,11 @@ export class VotersPage {
       this.http.post(url, formData).pipe().toPromise().then(response => {
         loading.dismissAll();
         console.log(response);
-        this.students = response['message'];
+        let url = Host.host + "/api/voters?token=" + token;
+        this.http.get<Response>(url).pipe().toPromise().then(response => {
+          console.log(response.status);
+          this.students = response.message;
+        });
       });
     });
 
