@@ -61,6 +61,7 @@ export class ResultsPage {
     });
 
     this.categories.push("All");
+    this.schools.push("All");
     console.log("categories " + this.categories);
 
   }
@@ -70,6 +71,7 @@ export class ResultsPage {
   }
 
   changeCategory(category: string) {
+    this.category = category;
     if (category === "All") {
       this.getToken().then(token => {
         let url = Host.host + "/api/results/tally?token=" + token;
@@ -90,5 +92,34 @@ export class ResultsPage {
         this.results = this.results.filter(result => result.category === category);
       });
     });
+  }
+
+  changeSchool(school) {
+    if (school === "All") {
+      this.getToken().then(token => {
+        let url = Host.host + "/api/results/tally?token=" + token;
+        this.http.get<Response>(url).pipe().toPromise().then(response => {
+          console.log(response.status);
+          this.results = response.message;
+        })
+      });
+      return;
+    }
+
+    console.log(school);
+
+    this.getToken().then(token => {
+      let url = Host.host + "/api/results/school/" + school + "?token=" + token;
+      this.http.get<Response>(url).pipe().toPromise().then(response=>{
+        console.log(response.message);
+        this.results = response.message;
+      })
+    });
+
+    if (this.category != "All")  {
+      this.results = this.results.filter(result => result.category === this.category);
+    }
+
+
   }
 }
