@@ -23,7 +23,6 @@ export class VotersPage {
   schools: string[];
   students: Array<{ id: number, school: string, uniqueId: string, voterCode: string, eligible: boolean }> = [];
   uniqueId: any;
-  host = "https://murmuring-earth-96219.herokuapp.com";
   file: any;
 
   constructor(public navCtrl: NavController,
@@ -34,12 +33,12 @@ export class VotersPage {
               private loadingController: LoadingController) {
 
     this.getToken().then(token => {
-      let url = this.host + "/api/voters?token=" + token;
+      let url = Host.host + "/api/voters?token=" + token;
       this.http.get<Response>(url).pipe().toPromise().then(response => {
         console.log(response.status);
         this.students = response.message;
       });
-      let schoolUrl = this.host + "/api/data/schools";
+      let schoolUrl = Host.host + "/api/data/schools";
       this.http.get<Response>(schoolUrl).pipe().toPromise().then(response => {
         console.log(response.status);
         this.schools = response.message;
@@ -54,11 +53,22 @@ export class VotersPage {
   }
 
   uploadFile() {
+
+    if (this.school == null) {
+      let alert = this.alertCtrl.create({
+        title: "Please select which school",
+        buttons: ['Ok']
+      });
+      // add loading
+      alert.present();
+      return;
+    }
+
     let loading = this.loadingController.create({content: "Please wait..."});
     loading.present();
 
     this.getToken().then(token => {
-      let url = "http://localhost:8080" + "/api/voters/upload?school=" + this.school + "&token=" + token;
+      let url = Host.host + "/api/voters/upload?school=" + this.school + "&token=" + token;
       let formData = new FormData();
       formData.append('file', this.file);
       this.http.post(url, formData).pipe().toPromise().then(response => {
@@ -90,11 +100,11 @@ export class VotersPage {
         })
       };
 
-      let url = this.host + "/api/voters?token=" + token;
+      let url = Host.host + "/api/voters?token=" + token;
       this.http.post<Response>(url, message, httpOptions).pipe().toPromise().then(response => {
         console.log(response.status);
       }).then(_ => {
-        let url = this.host + "/api/voters?token=" + token;
+        let url = Host.host + "/api/voters?token=" + token;
         this.http.get<Response>(url).pipe().toPromise().then(response => {
           console.log(response.status);
           this.students = response.message;
@@ -105,11 +115,11 @@ export class VotersPage {
 
   delete(id: number) {
     this.getToken().then(token => {
-      let url = this.host + "/api/voters/" + id + "?token=" + token;
+      let url = Host.host + "/api/voters/" + id + "?token=" + token;
       this.http.delete<Response>(url).pipe().toPromise().then(response => {
         console.log(response.status);
       }).then(_ => {
-        let url = this.host + "/api/voters?token=" + token;
+        let url = Host.host + "/api/voters?token=" + token;
         this.http.get<Response>(url).pipe().toPromise().then(response => {
           console.log(response.status);
           this.students = response.message;

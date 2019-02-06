@@ -3,6 +3,7 @@ import {IonicPage, NavController, NavParams} from 'ionic-angular';
 import {HttpClient} from '@angular/common/http';
 import {Response} from "../Response";
 import {Storage} from "@ionic/storage";
+import {Host} from "../Host";
 
 /**
  * Generated class for the ResultsPage page.
@@ -26,7 +27,6 @@ export class ResultsPage {
   school: any;
   categories: string[];
   schools: string[];
-  host = "https://murmuring-earth-96219.herokuapp.com";
   results: Array<{ title: string, company: string, tally: any, category: string }> = [];
 
   map = new Map();
@@ -40,20 +40,20 @@ export class ResultsPage {
     this.schools = [];
 
 
-    let schoolUrl = this.host + "/api/data/schools";
+    let schoolUrl = Host.host + "/api/data/schools";
     this.http.get<Response>(schoolUrl).pipe().toPromise().then(response => {
       console.log(response.status);
       this.schools = response.message
     });
 
-    let cateUrl = this.host + "/api/data/categories";
+    let cateUrl = Host.host + "/api/data/categories";
     this.http.get<Response>(cateUrl).pipe().toPromise().then(response => {
       console.log(response.status);
       this.categories = response.message
     });
 
     this.getToken().then(token => {
-      let url = this.host + "/api/results/tally?token=" + token;
+      let url = Host.host + "/api/results/tally?token=" + token;
       this.http.get<Response>(url).pipe().toPromise().then(response => {
         console.log(response.status);
         this.results = response.message;
@@ -72,7 +72,7 @@ export class ResultsPage {
   changeCategory(category: string) {
     if (category === "All") {
       this.getToken().then(token => {
-        let url = this.host + "/api/results/tally?token=" + token;
+        let url = Host.host + "/api/results/tally?token=" + token;
         this.http.get<Response>(url).pipe().toPromise().then(response => {
           console.log(response.status);
           this.results = response.message;
@@ -83,7 +83,7 @@ export class ResultsPage {
     console.log(category);
 
     this.getToken().then(token => {
-      let url = this.host + "/api/results/tally?token=" + token;
+      let url = Host.host + "/api/results/tally?token=" + token;
       this.http.get<Response>(url).pipe().toPromise().then(response => {
         console.log(response.status);
         this.results = response.message;

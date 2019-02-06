@@ -5,6 +5,7 @@ import {Storage} from "@ionic/storage";
 import {HttpClient, HttpErrorResponse, HttpHeaders, HttpResponse} from "@angular/common/http";
 import {Response} from "../Response"
 import {HomePage} from "../home/home";
+import {Host} from "../Host";
 
 @IonicPage()
 @Component({
@@ -17,7 +18,7 @@ export class LoginPage {
   mapRequest = new TSMap();
   map = new Map();
   // private host = "https://murmuring-earth-96219.herokuapp.com";
-  private host = "https://murmuring-earth-96219.herokuapp.com";
+  // private host = "https://murmuring-earth-96219.herokuapp.com";
 
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
@@ -67,7 +68,7 @@ export class LoginPage {
     this.mapRequest.set("password", this.password);
     let message = this.mapRequest.toJSON();
     console.log(message);
-    let url = this.host + "/api/users/login";
+    let url = Host.host + "/api/users/login";
 
     const httpOptions = {
       headers: new HttpHeaders({

@@ -5,6 +5,7 @@ import {Storage} from "@ionic/storage";
 import {Response} from "../Response";
 import {TSMap} from "typescript-map";
 import {LoginPage} from "../login/login";
+import {Host} from "../Host";
 
 /**
  * Generated class for the AdminPage page.
@@ -34,7 +35,7 @@ export class AdminPage {
   map = new Map();
   tokenContainer: string[] = [];
 
-  private host = "https://murmuring-earth-96219.herokuapp.com";
+
   startDate: string;
   endDate: string;
 
@@ -49,15 +50,17 @@ export class AdminPage {
     this.categories = [];
     this.schools = [];
 
-    let categoryUrl = this.host + "/api/data/categories";
+    let categoryUrl = Host.host + "/api/data/categories";
     this.http.get<Response>(categoryUrl).pipe().toPromise()
       .then(response => {
+        console.log(response);
         this.categories = response.message;
       });
 
-    let schoolUrl = this.host + "/api/data/schools";
+    let schoolUrl = Host.host + "/api/data/schools";
     this.http.get<Response>(schoolUrl).pipe().toPromise()
       .then(response => {
+        console.log(response);
         this.schools = response.message;
       });
 
@@ -89,8 +92,8 @@ export class AdminPage {
 
     // TODO admin fix
     this.getToken().then(token => {
-      let url = this.host + "/api/users?token=" + token;
-      this.http.post<Response>(url, message, httpOptions).pipe().toPromise().then(response=> {
+      let url = Host.host + "/api/users?token=" + token;
+      this.http.post<Response>(url, message, httpOptions).pipe().toPromise().then(response => {
         loading.dismissAll();
         let alert = this.alertCtrl.create({
           title: response['status'],
@@ -116,11 +119,11 @@ export class AdminPage {
           })
         };
 
-        let url = this.host + "/api/data/categories?token=" + token;
+        let url = Host.host + "/api/data/categories?token=" + token;
         this.http.post<Response>(url, message, httpOptions).pipe().toPromise().then(response => {
           console.log(response);
         }).then(_ => {
-          let url = this.host + "/api/data/categories";
+          let url = Host.host + "/api/data/categories";
           this.http.get<Response>(url).pipe().toPromise()
             .then(response => {
               console.log("refresh " + response);
@@ -148,11 +151,11 @@ export class AdminPage {
           })
         };
 
-        let url = this.host + "/api/data/schools?token=" + token;
+        let url = Host.host + "/api/data/schools?token=" + token;
         this.http.post<Response>(url, message, httpOptions).pipe().toPromise().then(response => {
           console.log(response);
         }).then(_ => {
-          let url = this.host + "/api/data/schools";
+          let url = Host.host + "/api/data/schools";
           this.http.get<Response>(url).pipe().toPromise()
             .then(response => {
               this.schools = response.message;
@@ -166,12 +169,12 @@ export class AdminPage {
   deleteCategory(c: string) {
 
     this.getToken().then(token => {
-      let url = this.host + "/api/data/categories/" + c + "?token=" + token;
+      let url = Host.host + "/api/data/categories/" + c + "?token=" + token;
       console.log(url);
       this.http.delete<Response>(url).pipe().toPromise().then(response => {
         console.log(response);
       }).then(_ => {
-        let url = this.host + "/api/data/categories";
+        let url = Host.host + "/api/data/categories";
         this.http.get<Response>(url).pipe().toPromise()
           .then(response => {
             this.categories = response.message;
@@ -182,12 +185,12 @@ export class AdminPage {
 
   deleteSchool(s: string) {
     this.getToken().then(token => {
-      let url = this.host + "/api/data/schools/" + s + "?token=" + token;
+      let url = Host.host + "/api/data/schools/" + s + "?token=" + token;
       console.log(url);
       this.http.delete<Response>(url).pipe().toPromise().then(response => {
         console.log(response.message)
       }).then(_ => {
-        let url = this.host + "/api/data/schools";
+        let url = Host.host + "/api/data/schools";
         this.http.get<Response>(url).pipe().toPromise()
           .then(response => {
             this.schools = response.message;
@@ -204,13 +207,16 @@ export class AdminPage {
   setDefaults() {
     console.log("Setting default values for categories and schools...");
     this.getToken().then(token => {
-      this.http.get<Response>(this.host + "/api/data/defaults/categories?token=" + token)
+      console.log("what");
+      this.http.get<Response>(Host.host + "/api/data/defaults/categories?token=" + token)
         .pipe().toPromise().then(response => {
-        this.categories = response.message;
+        console.log(response);
+        this.categories = response['message'];
       }).then(_ => {
-        this.http.get<Response>(this.host + "/api/data/defaults/schools?token=" + token)
+        this.http.get<Response>(Host.host + "/api/data/defaults/schools?token=" + token)
           .pipe().toPromise().then(response => {
-          this.schools = response.message;
+          console.log(response);
+          this.schools = response['message'];
         })
       })
     });
@@ -232,7 +238,7 @@ export class AdminPage {
       };
 
       let message = map.toJSON();
-      this.http.post<Response>(this.host + "/api/date?token=" + token, message, httpOptions).pipe().toPromise().then(response => {
+      this.http.post<Response>(Host.host + "/api/date?token=" + token, message, httpOptions).pipe().toPromise().then(response => {
         console.log(response);
         loading.dismissAll();
       })
