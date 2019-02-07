@@ -23,7 +23,9 @@
     "@ionic-native/core": "~4.18.0",
     "@ionic-native/splash-screen": "~4.18.0",
     "@ionic-native/status-bar": "~4.18.0",
+    "@ionic/app-scripts": "3.2.1",
     "@ionic/storage": "2.2.0",
+    "angular5-csv": "^0.2.11",
     "body-parser": "^1.18.3",
     "bootstrap": "^4.2.1",
     "cors": "^2.8.5",
@@ -33,12 +35,10 @@
     "morgan": "^1.9.1",
     "rxjs": "5.5.11",
     "sw-toolbox": "3.6.0",
+    "typescript": "~2.6.2",
     "typescript-map": "0.0.6",
-    "zone.js": "0.8.26",
-    "@ionic/app-scripts": "3.2.1",
-    "typescript": "~2.6.2"
+    "zone.js": "0.8.26"
   },
-  "devDependencies": {
-  },
+  "devDependencies": {},
   "description": "An Ionic project"
 }

@@ -4,6 +4,7 @@ import {HttpClient} from '@angular/common/http';
 import {Response} from "../Response";
 import {Storage} from "@ionic/storage";
 import {Host} from "../Host";
+import {Angular5Csv} from "angular5-csv/dist/Angular5-csv";
 
 /**
  * Generated class for the ResultsPage page.
@@ -44,12 +45,14 @@ export class ResultsPage {
     this.http.get<Response>(schoolUrl).pipe().toPromise().then(response => {
       console.log(response.status);
       this.schools = response.message
+      this.schools.push("All");
     });
 
     let cateUrl = Host.host + "/api/data/categories";
     this.http.get<Response>(cateUrl).pipe().toPromise().then(response => {
       console.log(response.status);
       this.categories = response.message
+      this.categories.push("All");
     });
 
     this.getToken().then(token => {
@@ -60,10 +63,12 @@ export class ResultsPage {
       })
     });
 
-    this.categories.push("All");
-    this.schools.push("All");
     console.log("categories " + this.categories);
 
+  }
+
+  download() {
+    new Angular5Csv(this.results, "kwan");
   }
 
   getToken() {
@@ -110,13 +115,13 @@ export class ResultsPage {
 
     this.getToken().then(token => {
       let url = Host.host + "/api/results/school/" + school + "?token=" + token;
-      this.http.get<Response>(url).pipe().toPromise().then(response=>{
+      this.http.get<Response>(url).pipe().toPromise().then(response => {
         console.log(response.message);
         this.results = response.message;
       })
     });
 
-    if (this.category != "All")  {
+    if (this.category != "All") {
       this.results = this.results.filter(result => result.category === this.category);
     }
 

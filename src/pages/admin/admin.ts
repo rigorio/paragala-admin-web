@@ -34,10 +34,11 @@ export class AdminPage {
   school: string;
   map = new Map();
   tokenContainer: string[] = [];
+  superAdmin: any;
 
 
-  startDate: string;
-  endDate: string;
+  startDate: any;
+  endDate: any;
 
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
@@ -64,10 +65,87 @@ export class AdminPage {
         this.schools = response.message;
       });
 
+    let dateUrl = Host.host + "/api/date";
+    this.http.get<Response>(dateUrl + "/start").pipe().toPromise()
+      .then(response => {
+        console.log(response);
+        this.startDate = (response.message);
+      });
+    this.http.get<Response>(dateUrl + "/end").pipe().toPromise()
+      .then(response => {
+        console.log(response);
+        this.endDate = (response.message);
+      });
+
   }
 
   private getToken() {
     return this.storage.get("paragala-token");
+  }
+
+  schoolFile: any;
+
+  selectFile(event) {
+    console.log(event);
+    this.schoolFile = event.target.files[0];
+  }
+
+  uploadFile() {
+    if (this.schoolFile == null) {
+      let alert = this.alertCtrl.create({
+        title: "Please select a csv",
+        buttons: ['Ok']
+      });
+      // add loading
+      alert.present();
+      return;
+    }
+    let loading = this.loadingController.create({content: "Please wait..."});
+    loading.present();
+
+    this.getToken().then(token => {
+      let url = Host.host + "/api/data/schools/upload?token=" + token;
+      let formData = new FormData();
+      formData.append('file', this.schoolFile);
+      this.http.post(url, formData).pipe().toPromise().then(response => {
+        loading.dismissAll();
+        console.log(response);
+        this.schools = response['message'];
+      });
+    });
+
+  }
+
+  categoryFile: any;
+  selectFileCategories(event) {
+    console.log(event);
+    this.categoryFile = event.target.files[0];
+  }
+
+  uploadFileCategories() {
+    if (this.schoolFile == null) {
+      let alert = this.alertCtrl.create({
+        title: "Please select a csv",
+        buttons: ['Ok']
+      });
+      // add loading
+      alert.present();
+      return;
+    }
+    let loading = this.loadingController.create({content: "Please wait..."});
+    loading.present();
+
+    this.getToken().then(token => {
+      let url = Host.host + "/api/data/schools/upload?token=" + token;
+      let formData = new FormData();
+      formData.append('file', this.categoryFile);
+      this.http.post(url, formData).pipe().toPromise().then(response => {
+        loading.dismissAll();
+        console.log(response);
+        this.schools = response['message'];
+      });
+    });
+
   }
 
   /**
@@ -75,11 +153,44 @@ export class AdminPage {
    */
   createAdmin() {
     let loading = this.loadingController.create({content: "Creating admin..."});
-    loading.present();
+
+    if (this.confirmPassword == null) {
+      let alert = this.alertCtrl.create({
+        title: "Enter admin password",
+        buttons: ['Ok']
+      });
+      // add loading
+      alert.present();
+      return;
+    }
+
+    if (this.password != this.confirmPassword) {
+      let alert = this.alertCtrl.create({
+        title: "Passwords did not match!",
+        buttons: ['Ok']
+      });
+      // add loading
+      alert.present();
+      return;
+    }
+
+    console.log(this.superAdmin);
+
+    if (this.superAdmin == null) {
+      let alert = this.alertCtrl.create({
+        title: "Please specify if super admin or not",
+        buttons: ['Ok']
+      });
+      // add loading
+      alert.present();
+      return;
+    }
+
     let tsMap = new TSMap();
 
     tsMap.set("email", this.email);
     tsMap.set("password", this.password);
+    tsMap.set("superAdmin", this.superAdmin);
     tsMap.set("currentPassword", this.currentAdminPassword);
 
     let message = tsMap.toJSON();
@@ -90,10 +201,12 @@ export class AdminPage {
       })
     };
 
+    loading.present();
     // TODO admin fix
     this.getToken().then(token => {
       let url = Host.host + "/api/users?token=" + token;
       this.http.post<Response>(url, message, httpOptions).pipe().toPromise().then(response => {
+        console.log(response);
         loading.dismissAll();
         let alert = this.alertCtrl.create({
           title: response['status'],
@@ -223,6 +336,9 @@ export class AdminPage {
   }
 
   setStartEnd() {
+    console.log("baby");
+    console.log(this.startDate);
+    console.log(this.endDate);
     let loading = this.loadingController.create({content: "Setting voting period..."});
 
     this.getToken().then(token => {
@@ -241,6 +357,18 @@ export class AdminPage {
       this.http.post<Response>(Host.host + "/api/date?token=" + token, message, httpOptions).pipe().toPromise().then(response => {
         console.log(response);
         loading.dismissAll();
+      }).then(_ => {
+        let dateUrl = Host.host + "/api/date";
+        this.http.get<Response>(dateUrl + "/start").pipe().toPromise()
+          .then(response => {
+            console.log(response);
+            this.startDate = response.message;
+          });
+        this.http.get<Response>(dateUrl + "/end").pipe().toPromise()
+          .then(response => {
+            console.log(response);
+            this.endDate = response.message;
+          });
       })
     })
 

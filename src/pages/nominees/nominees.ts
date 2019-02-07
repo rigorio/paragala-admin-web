@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {AlertController, IonicPage, NavController, NavParams} from 'ionic-angular';
+import {AlertController, IonicPage, LoadingController, NavController, NavParams} from 'ionic-angular';
 import {HttpClient, HttpErrorResponse, HttpHeaders} from '@angular/common/http';
 
 import {Response} from "../Response"
@@ -39,7 +39,8 @@ export class NomineesPage {
               public navParams: NavParams,
               private alertCtrl: AlertController,
               private storage: Storage,
-              private http: HttpClient) {
+              private http: HttpClient,
+              private loadingController: LoadingController) {
     this.nominees = [];
     this.categories = [];
 
@@ -81,6 +82,30 @@ export class NomineesPage {
       });
     });
 
+
+  }
+
+
+  selectFile(event) {
+    console.log(event);
+    this.file = event.target.files[0];
+  }
+
+  uploadFile() {
+
+    let loading = this.loadingController.create({content: "Please wait..."});
+    loading.present();
+
+    this.getToken().then(token => {
+      let url = Host.host + "/api/data/nominees/upload?token=" + token;
+      let formData = new FormData();
+      formData.append('file', this.file);
+      this.http.post(url, formData).pipe().toPromise().then(response => {
+        loading.dismissAll();
+        console.log(response);
+        this.nominees = response['message'];
+      });
+    });
 
   }
 

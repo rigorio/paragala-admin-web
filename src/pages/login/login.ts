@@ -45,11 +45,13 @@ export class LoginPage {
     let loading = this.loadingController.create({content: "Logging in..."});
     loading.present();
     this.fetchLogin().subscribe(response => {
+      console.log(response);
       if (response['status'] === "Logged In") {
         this.storage.set("paragala-token", response['message']);
         loading.dismissAll();
         this.navCtrl.setRoot(HomePage);
       } else {
+        console.log("dapat keni ku");
         loading.dismissAll();
         let alert = this.alertCtrl.create({
           title: response['status'],
