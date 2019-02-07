@@ -92,6 +92,15 @@ export class NomineesPage {
   }
 
   uploadFile() {
+    if (this.file == null) {
+      let alert = this.alertCtrl.create({
+        title: "Please select a csv",
+        buttons: ['Ok']
+      });
+      // add loading
+      alert.present();
+      return;
+    }
 
     let loading = this.loadingController.create({content: "Please wait..."});
     loading.present();

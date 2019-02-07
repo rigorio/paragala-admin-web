@@ -6,7 +6,7 @@
 -->
 <ion-header>
 
-  <ion-navbar>
+  <ion-navbar color="norm-green">
     <ion-title>Login</ion-title>
   </ion-navbar>
 
@@ -18,17 +18,17 @@
 
   <div class="login">
 
-  <ion-item>
-    <ion-label color="norm-green" floating>Username</ion-label>
-    <ion-input [(ngModel)]="username"></ion-input>
-  </ion-item>
+    <ion-item>
+      <ion-label color="norm-green" floating>Username</ion-label>
+      <ion-input [(ngModel)]="username"></ion-input>
+    </ion-item>
 
-  <ion-item>
-    <ion-label color="norm-green" floating>Password</ion-label>
-    <ion-input type="password" [(ngModel)]="password"></ion-input>
-  </ion-item>
+    <ion-item>
+      <ion-label color="norm-green" floating>Password</ion-label>
+      <ion-input type="password" [(ngModel)]="password"></ion-input>
+    </ion-item>
 
-  <button color="light-green" ion-button (click)="login()">Login</button>
+    <button color="light-green" ion-button (click)="login()">Login</button>
   </div>
 
 </ion-content>
