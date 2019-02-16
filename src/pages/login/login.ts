@@ -7,7 +7,6 @@ import {Response} from "../Response"
 import {HomePage} from "../home/home";
 import {Host} from "../Host";
 
-@IonicPage()
 @Component({
   selector: 'page-login',
   templateUrl: 'login.html',

@@ -6,14 +6,6 @@ import {Response} from "../Response";
 import {TSMap} from "typescript-map";
 import {Host} from "../Host";
 
-/**
- * Generated class for the VotersPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
-
-@IonicPage()
 @Component({
   selector: 'page-voters',
   templateUrl: 'voters.html',

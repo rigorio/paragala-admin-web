@@ -6,14 +6,7 @@ import {Storage} from "@ionic/storage";
 import {Host} from "../Host";
 import {Angular5Csv} from "angular5-csv/dist/Angular5-csv";
 
-/**
- * Generated class for the ResultsPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
 
-@IonicPage()
 @Component({
   selector: 'page-results',
   templateUrl: 'results.html',
