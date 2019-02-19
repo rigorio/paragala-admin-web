@@ -38,16 +38,16 @@ export class NomineesPage {
     this.categories = [];
 
 
-      // let host = "https://murmuring-earth-96219.herokuapp.com/api/data/categories";
-      let cateUrl = Host.host + "/api/data/categories";
-      this.http.get<Response>(cateUrl).pipe().toPromise().then(response => {
-        this.categories = response.message;
-      });
+    // let host = "https://murmuring-earth-96219.herokuapp.com/api/data/categories";
+    let cateUrl = Host.host + "/api/data/categories";
+    this.http.get<Response>(cateUrl).pipe().toPromise().then(response => {
+      this.categories = response.message;
+    });
 
-      let nomineeUrl = Host.host + "/api/data/nominees";
-      this.http.get<Response>(nomineeUrl).pipe().toPromise().then(response => {
-        this.nominees = response.message;
-      });
+    let nomineeUrl = Host.host + "/api/data/nominees";
+    this.http.get<Response>(nomineeUrl).pipe().toPromise().then(response => {
+      this.nominees = response.message;
+    });
 
 
   }
@@ -71,7 +71,20 @@ export class NomineesPage {
 
       let url = Host.host + "/api/data/nominees?token=" + token;
       this.http.post<Response>(url, message, httpOptions).pipe().toPromise().then(response => {
-        this.nominees = response.message;
+        console.log("create nominee");
+        console.log(response);
+        if (response.status == "Failed") {
+          let alert = this.alertCtrl.create({
+            title: response['status'],
+            subTitle: response['message'],
+            buttons: ['Ok']
+          });
+          // add loading
+          alert.present();
+        } else {
+          console.log("eh?");
+          this.nominees = response.message;
+        }
       });
     });
 
@@ -102,10 +115,19 @@ export class NomineesPage {
       let url = Host.host + "/api/data/nominees/upload?token=" + token;
       let formData = new FormData();
       formData.append('file', this.file);
-      this.http.post(url, formData).pipe().toPromise().then(response => {
+      this.http.post<Response>(url, formData).pipe().toPromise().then(response => {
         loading.dismissAll();
         console.log(response);
-        this.nominees = response['message'];
+        if (response.status == "Failed") {
+          let alert = this.alertCtrl.create({
+            title: response['status'],
+            subTitle: response['message'],
+            buttons: ['Ok']
+          });
+          // add loading
+          alert.present();
+        } else
+          this.nominees = response['message'];
       });
     });
 
@@ -116,6 +138,16 @@ export class NomineesPage {
       let url = Host.host + "/api/data/nominees/" + id + "?token=" + token;
       this.http.delete<Response>(url).pipe().toPromise().then(response => {
         console.log(response.status + ":::" + response.message);
+        if (response.status == "Failed") {
+          let alert = this.alertCtrl.create({
+            title: response['status'],
+            subTitle: response['message'],
+            buttons: ['Ok']
+          });
+          // add loading
+          alert.present();
+        }
+
       }).then(_ => {
         let url = Host.host + "/api/data/nominees";
         this.http.get<Response>(url).pipe().toPromise().then(response => {
@@ -134,7 +166,16 @@ export class NomineesPage {
     this.getToken().then(token => {
       this.http.get<Response>(Host.host + "/api/data/defaults/nominees?token=" + token)
         .pipe().toPromise().then(response => {
-        this.nominees = response.message;
+        if (response.status == "Failed") {
+          let alert = this.alertCtrl.create({
+            title: response['status'],
+            subTitle: response['message'],
+            buttons: ['Ok']
+          });
+          // add loading
+          alert.present();
+        } else
+          this.nominees = response.message;
       })
     });
 

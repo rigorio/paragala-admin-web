@@ -32,9 +32,10 @@
       <ion-input type="password" [(ngModel)]="currentAdminPassword"></ion-input>
     </ion-item>
     <ion-item class="sizer">
-      <ion-select placeholder="Super Admin" [(ngModel)]="superAdmin">
-        <ion-option>True</ion-option>
-        <ion-option>False</ion-option>
+      <ion-label>Level of Access</ion-label>
+      <ion-select placeholder="Select level" [(ngModel)]="superAdmin">
+        <ion-option value="True">Admin</ion-option>
+        <ion-option value="False">Officer</ion-option>
       </ion-select>
     </ion-item>
     <button class="adminbutton" color="light-green" ion-button (click)="createAdmin()">Create Admin</button>
@@ -63,43 +64,8 @@
 
   </div>
 
-  <button class="adminbutton" color="light-green" ion-button (click)="setDefaults()">Set Default Schools and
-    Categories
+  <button class="adminbutton" color="light-green" ion-button (click)="setDefaults()">Set Default Categories
   </button>
-  <ion-grid class="sizer">
-    <ion-row>
-      <ion-col>
-        <ion-item>
-          <ion-label color="norm-green" stacked>Upload categories csv</ion-label>
-          <ion-input type="file"
-                     accept=".csv"
-                     (change)="selectFileCategories($event)">Add Categories
-          </ion-input>
-        </ion-item>
-      </ion-col>
-      <ion-col class="upload">
-        <button color="light-green" ion-button (click)="uploadFileCategories()">Upload File</button>
-      </ion-col>
-    </ion-row>
-  </ion-grid>
-
-  <ion-grid class="sizer">
-    <ion-row>
-      <ion-col>
-        <ion-item>
-          <ion-label color="norm-green" stacked>Upload schools csv</ion-label>
-          <ion-input type="file"
-                     accept=".csv"
-                     (change)="selectFile($event)">Add Schools
-          </ion-input>
-        </ion-item>
-      </ion-col>
-      <ion-col class="upload">
-        <button color="light-green" ion-button (click)="uploadFile()">Upload File</button>
-      </ion-col>
-    </ion-row>
-  </ion-grid>
-
 
   <div class="add-category">
 
@@ -117,26 +83,6 @@
           <ion-icon name='trash'></ion-icon>
         </button>
         {{ c }}
-      </ion-row>
-
-    </ion-col>
-  </div>
-  <div class="add-category">
-
-    <ion-col class="school">
-
-      <ion-row>
-        <ion-item>
-          <ion-label color="norm-green" floating>Add School</ion-label>
-          <ion-input [(ngModel)]="school" (keypress)="addSchool($event.keyCode)"></ion-input>
-        </ion-item>
-      </ion-row>
-
-      <ion-row *ngFor="let s of schools">
-        <button class="delete" (click)="deleteSchool(s)" ion-button color="danger" clear icon-only>
-          <ion-icon name='trash'></ion-icon>
-        </button>
-        {{ s }}
       </ion-row>
 
     </ion-col>

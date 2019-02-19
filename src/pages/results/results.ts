@@ -48,12 +48,18 @@ export class ResultsPage {
       this.categories.push("All");
     });
 
-    this.getToken().then(token => {
-      let url = Host.host + "/api/results/tally?token=" + token;
-      this.http.get<Response>(url).pipe().toPromise().then(response => {
-        console.log(response.status);
-        this.results = response.message;
-      })
+    // this.getToken().then(token => {
+    //   let url = Host.host + "/api/results/tally?token=" + token;
+    //   this.http.get<Response>(url).pipe().toPromise().then(response => {
+    //     console.log(response.status);
+    //     this.results = response.message;
+    //   })
+    // });
+
+    let url = Host.host + "/api/data/nominees";
+    this.http.get<Response>(url).pipe().toPromise().then(response => {
+      console.log(response.status);
+      this.results = response.message;
     });
 
     console.log("categories " + this.categories);

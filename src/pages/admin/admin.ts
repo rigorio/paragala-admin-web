@@ -22,8 +22,6 @@ export class AdminPage {
   confirmPassword: any;
   category: string;
   categories: string[];
-  schools: string[];
-  school: string;
   map = new Map();
   tokenContainer: string[] = [];
   superAdmin: any;
@@ -41,20 +39,12 @@ export class AdminPage {
               private alertController: AlertController) {
 
     this.categories = [];
-    this.schools = [];
 
     let categoryUrl = Host.host + "/api/data/categories";
     this.http.get<Response>(categoryUrl).pipe().toPromise()
       .then(response => {
         console.log(response);
         this.categories = response.message;
-      });
-
-    let schoolUrl = Host.host + "/api/data/schools";
-    this.http.get<Response>(schoolUrl).pipe().toPromise()
-      .then(response => {
-        console.log(response);
-        this.schools = response.message;
       });
 
     let dateUrl = Host.host + "/api/date";
@@ -73,71 +63,6 @@ export class AdminPage {
 
   private getToken() {
     return this.storage.get("paragala-token");
-  }
-
-  schoolFile: any;
-
-  selectFile(event) {
-    console.log(event);
-    this.schoolFile = event.target.files[0];
-  }
-
-  uploadFile() {
-    if (this.schoolFile == null) {
-      let alert = this.alertCtrl.create({
-        title: "Please select a csv",
-        buttons: ['Ok']
-      });
-      // add loading
-      alert.present();
-      return;
-    }
-    let loading = this.loadingController.create({content: "Please wait..."});
-    loading.present();
-
-    this.getToken().then(token => {
-      let url = Host.host + "/api/data/schools/upload?token=" + token;
-      let formData = new FormData();
-      formData.append('file', this.schoolFile);
-      this.http.post(url, formData).pipe().toPromise().then(response => {
-        loading.dismissAll();
-        console.log(response);
-        this.schools = response['message'];
-      });
-    });
-
-  }
-
-  categoryFile: any;
-  selectFileCategories(event) {
-    console.log(event);
-    this.categoryFile = event.target.files[0];
-  }
-
-  uploadFileCategories() {
-    if (this.schoolFile == null) {
-      let alert = this.alertCtrl.create({
-        title: "Please select a csv",
-        buttons: ['Ok']
-      });
-      // add loading
-      alert.present();
-      return;
-    }
-    let loading = this.loadingController.create({content: "Please wait..."});
-    loading.present();
-
-    this.getToken().then(token => {
-      let url = Host.host + "/api/data/schools/upload?token=" + token;
-      let formData = new FormData();
-      formData.append('file', this.categoryFile);
-      this.http.post(url, formData).pipe().toPromise().then(response => {
-        loading.dismissAll();
-        console.log(response);
-        this.schools = response['message'];
-      });
-    });
-
   }
 
   /**
@@ -227,6 +152,15 @@ export class AdminPage {
         let url = Host.host + "/api/data/categories?token=" + token;
         this.http.post<Response>(url, message, httpOptions).pipe().toPromise().then(response => {
           console.log(response);
+          if (response.status == "Failed") {
+            let alert = this.alertCtrl.create({
+              title: response['status'],
+              subTitle: response['message'],
+              buttons: ['Ok']
+            });
+            // add loading
+            alert.present();
+          }
         }).then(_ => {
           let url = Host.host + "/api/data/categories";
           this.http.get<Response>(url).pipe().toPromise()
@@ -242,35 +176,6 @@ export class AdminPage {
   }
 
 
-  addSchool(keyCode: number) {
-    if (keyCode == 13) {
-
-      this.getToken().then(token => {
-        let tsMap = new TSMap();
-        tsMap.set("school", this.school);
-        let message = tsMap.toJSON();
-
-        const httpOptions = {
-          headers: new HttpHeaders({
-            'Content-Type': 'application/json'
-          })
-        };
-
-        let url = Host.host + "/api/data/schools?token=" + token;
-        this.http.post<Response>(url, message, httpOptions).pipe().toPromise().then(response => {
-          console.log(response);
-        }).then(_ => {
-          let url = Host.host + "/api/data/schools";
-          this.http.get<Response>(url).pipe().toPromise()
-            .then(response => {
-              this.schools = response.message;
-            });
-        })
-      });
-    }
-  }
-
-
   deleteCategory(c: string) {
 
     this.getToken().then(token => {
@@ -278,6 +183,15 @@ export class AdminPage {
       console.log(url);
       this.http.delete<Response>(url).pipe().toPromise().then(response => {
         console.log(response);
+        if (response.status == "Failed") {
+          let alert = this.alertCtrl.create({
+            title: response['status'],
+            subTitle: response['message'],
+            buttons: ['Ok']
+          });
+          // add loading
+          alert.present();
+        }
       }).then(_ => {
         let url = Host.host + "/api/data/categories";
         this.http.get<Response>(url).pipe().toPromise()
@@ -288,21 +202,6 @@ export class AdminPage {
     });
   }
 
-  deleteSchool(s: string) {
-    this.getToken().then(token => {
-      let url = Host.host + "/api/data/schools/" + s + "?token=" + token;
-      console.log(url);
-      this.http.delete<Response>(url).pipe().toPromise().then(response => {
-        console.log(response.message)
-      }).then(_ => {
-        let url = Host.host + "/api/data/schools";
-        this.http.get<Response>(url).pipe().toPromise()
-          .then(response => {
-            this.schools = response.message;
-          });
-      });
-    });
-  }
 
   logout() {
     this.storage.remove("paragala-token");
@@ -316,13 +215,16 @@ export class AdminPage {
       this.http.get<Response>(Host.host + "/api/data/defaults/categories?token=" + token)
         .pipe().toPromise().then(response => {
         console.log(response);
-        this.categories = response['message'];
-      }).then(_ => {
-        this.http.get<Response>(Host.host + "/api/data/defaults/schools?token=" + token)
-          .pipe().toPromise().then(response => {
-          console.log(response);
-          this.schools = response['message'];
-        })
+        if (response.status == "Failed") {
+          let alert = this.alertCtrl.create({
+            title: response['status'],
+            subTitle: response['message'],
+            buttons: ['Ok']
+          });
+          // add loading
+          alert.present();
+        } else
+          this.categories = response['message'];
       })
     });
   }

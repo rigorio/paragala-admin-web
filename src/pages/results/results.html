@@ -20,12 +20,6 @@
       <ion-option *ngFor="let c of categories">{{ c }}</ion-option>
     </ion-select>
   </ion-item>
-  <ion-item class="filter">
-    <ion-label>School</ion-label>
-    <ion-select interface="popover" [(ngModel)]="school" (ngModelChange)="changeSchool(school)">
-      <ion-option *ngFor="let s of schools">{{ s }}</ion-option>
-    </ion-select>
-  </ion-item>
   <button color="light-green" ion-button (click)="download()">Download</button>
 
 
