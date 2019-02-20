@@ -17,7 +17,8 @@ export class MyApp {
   @ViewChild(Nav) nav: Nav;
 
   // make HelloIonicPage the root (or first) page
-  rootPage = LoginPage;
+  // rootPage = LoginPage;
+  rootPage = HomePage;
 
   constructor(
     public platform: Platform,
@@ -27,6 +28,8 @@ export class MyApp {
     public splashScreen: SplashScreen
   ) {
     storage.clear();
+    storage.set('paragala-token', 'cdee4484-97f7-4358-a082-554672f5c1e5');
+
     this.initializeApp();
   }
 

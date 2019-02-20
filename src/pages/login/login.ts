@@ -108,4 +108,8 @@ export class LoginPage {
       alert.present();
     }
   };
+
+  forgotPassword() {
+    console.log("does nothing");
+  }
 }

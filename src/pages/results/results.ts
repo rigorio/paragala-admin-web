@@ -18,9 +18,7 @@ export class ResultsPage {
   }
 
   category: any;
-  school: any;
   categories: string[];
-  schools: string[];
   results: Array<{ title: string, company: string, tally: any, category: string }> = [];
 
   map = new Map();
@@ -31,15 +29,7 @@ export class ResultsPage {
               private http: HttpClient) {
 
     this.categories = [];
-    this.schools = [];
 
-
-    let schoolUrl = Host.host + "/api/data/schools";
-    this.http.get<Response>(schoolUrl).pipe().toPromise().then(response => {
-      console.log(response.status);
-      this.schools = response.message
-      this.schools.push("All");
-    });
 
     let cateUrl = Host.host + "/api/data/categories";
     this.http.get<Response>(cateUrl).pipe().toPromise().then(response => {
@@ -56,7 +46,7 @@ export class ResultsPage {
     //   })
     // });
 
-    let url = Host.host + "/api/data/nominees";
+    let url = Host.host + "/api/results/v2/tally";
     this.http.get<Response>(url).pipe().toPromise().then(response => {
       console.log(response.status);
       this.results = response.message;
@@ -78,7 +68,7 @@ export class ResultsPage {
     this.category = category;
     if (category === "All") {
       this.getToken().then(token => {
-        let url = Host.host + "/api/results/tally?token=" + token;
+        let url = Host.host + "/api/results/v2/tally?token=" + token;
         this.http.get<Response>(url).pipe().toPromise().then(response => {
           console.log(response.status);
           this.results = response.message;
@@ -89,41 +79,22 @@ export class ResultsPage {
     console.log(category);
 
     this.getToken().then(token => {
-      let url = Host.host + "/api/results/tally?token=" + token;
+      let url = Host.host + "/api/results/v2/tally?token=" + token;
       this.http.get<Response>(url).pipe().toPromise().then(response => {
         console.log(response.status);
         this.results = response.message;
+        console.log("kore");
+        console.log(this.results);
         this.results = this.results.filter(result => result.category === category);
       });
     });
   }
 
-  changeSchool(school) {
-    if (school === "All") {
-      this.getToken().then(token => {
-        let url = Host.host + "/api/results/tally?token=" + token;
-        this.http.get<Response>(url).pipe().toPromise().then(response => {
-          console.log(response.status);
-          this.results = response.message;
-        })
-      });
-      return;
-    }
-
-    console.log(school);
-
-    this.getToken().then(token => {
-      let url = Host.host + "/api/results/school/" + school + "?token=" + token;
-      this.http.get<Response>(url).pipe().toPromise().then(response => {
-        console.log(response.message);
-        this.results = response.message;
-      })
-    });
-
-    if (this.category != "All") {
-      this.results = this.results.filter(result => result.category === this.category);
-    }
-
-
+  viewWinners() {
+    let url = Host.host + "/api/results/winners";
+    this.http.get<Response>(url).pipe().toPromise().then(response => {
+      console.log(response);
+      this.results = response.message;
+    })
   }
 }

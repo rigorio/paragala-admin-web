@@ -13,6 +13,7 @@ import {ResultsPage} from "../pages/results/results";
 import {VotersPage} from "../pages/voters/voters";
 import {AdminPage} from "../pages/admin/admin";
 import {LoginPage} from "../pages/login/login";
+import {EditAdminPage} from "../pages/edit-admin/edit-admin";
 
 @NgModule({
   declarations: [
@@ -22,7 +23,8 @@ import {LoginPage} from "../pages/login/login";
     NomineesPage,
     ResultsPage,
     VotersPage,
-    AdminPage
+    AdminPage,
+    EditAdminPage
   ],
   imports: [
     BrowserModule,
@@ -38,7 +40,8 @@ import {LoginPage} from "../pages/login/login";
     NomineesPage,
     ResultsPage,
     VotersPage,
-    AdminPage
+    AdminPage,
+    EditAdminPage
   ],
   providers: [
     StatusBar,

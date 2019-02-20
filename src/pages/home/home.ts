@@ -17,8 +17,7 @@ export class HomePage {
     this.pages = [
       { title: 'Admin', component: AdminPage },
       { title: 'Results', component: ResultsPage },
-      { title: 'Nominees', component: NomineesPage },
-      { title: 'Voters', component: VotersPage }
+      { title: 'Nominees', component: NomineesPage }
     ];
   }
 
