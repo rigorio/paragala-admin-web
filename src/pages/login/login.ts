@@ -80,36 +80,4 @@ export class LoginPage {
     return this.http.post<Response>(url, message, httpOptions);
   }
 
-  private handleError(error: HttpErrorResponse) {
-    if (error.error instanceof ErrorEvent) {
-      // A client-side or network error occurred. Handle it accordingly.
-      console.error('An error occurred:', error.error.message);
-      let alert = this.alertCtrl.create({
-        title: 'An error occurred:',
-        subTitle: error.error.message +
-          `Please try again later`,
-        buttons: ['Ok']
-      });
-      alert.present();
-    } else {
-      // The backend returned an unsuccessful response code.
-      // The response body may contain clues as to what went wrong,
-      console.error(
-        `Backend returned code ${error.status}, ` +
-        `body was: ${error.error}`);
-      let alert = this.alertCtrl.create({
-        title: 'An error occurred:',
-        subTitle:
-          `Backend returned code ${error.status}, ` +
-          `body was: ${error.error}` +
-          `Please retry or contact an administrator for help.`,
-        buttons: ['Ok']
-      });
-      alert.present();
-    }
-  };
-
-  forgotPassword() {
-    console.log("does nothing");
-  }
 }
