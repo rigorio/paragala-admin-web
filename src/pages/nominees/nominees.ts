@@ -134,28 +134,52 @@ export class NomineesPage {
   }
 
   delete(id: any) {
-    this.getToken().then(token => {
-      let url = Host.host + "/api/data/nominees/" + id + "?token=" + token;
-      this.http.delete<Response>(url).pipe().toPromise().then(response => {
-        console.log(response.status + ":::" + response.message);
-        if (response.status == "Failed") {
-          let alert = this.alertCtrl.create({
-            title: response['status'],
-            subTitle: response['message'],
-            buttons: ['Ok']
-          });
-          // add loading
-          alert.present();
-        }
+    console.log("what");
+    let alert = this.alertCtrl.create({
+      title: 'Are you sure you want to start over?',
+      buttons: [
+        {
+          text: 'No',
+          role: 'cancel',
+          cssClass: 'secondary',
+          handler: (blah) => {
+            console.log('Confirm Cancel: blah');
+          }
+        }, {
+          text: 'Yes',
+          handler: () => {
+            console.log('Confirm Okay');
 
-      }).then(_ => {
-        let url = Host.host + "/api/data/nominees";
-        this.http.get<Response>(url).pipe().toPromise().then(response => {
-          console.log(response.status);
-          this.nominees = response.message;
-        });
-      });
+
+            this.getToken().then(token => {
+              let url = Host.host + "/api/data/nominees/" + id + "?token=" + token;
+              this.http.delete<Response>(url).pipe().toPromise().then(response => {
+                console.log(response.status + ":::" + response.message);
+                if (response.status == "Failed") {
+                  let alert = this.alertCtrl.create({
+                    title: response['status'],
+                    subTitle: response['message'],
+                    buttons: ['Ok']
+                  });
+                  // add loading
+                  alert.present();
+                }
+
+              }).then(_ => {
+                let url = Host.host + "/api/data/nominees";
+                this.http.get<Response>(url).pipe().toPromise().then(response => {
+                  console.log(response.status);
+                  this.nominees = response.message;
+                });
+              });
+            });
+
+          }
+        }
+      ]
     });
+
+    alert.present();
   }
 
   private getToken() {

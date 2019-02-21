@@ -4,6 +4,7 @@ import {ResultsPage} from "../results/results";
 import {NomineesPage} from "../nominees/nominees";
 import {VotersPage} from "../voters/voters";
 import {AdminPage} from "../admin/admin";
+import {VotingPage} from "../voting/voting";
 
 @Component({
   selector: 'page-home',
@@ -11,13 +12,14 @@ import {AdminPage} from "../admin/admin";
 })
 export class HomePage {
 
-  pages: Array<{title: string, component: any}>;
+  pages: Array<{ title: string, component: any }>;
 
   constructor(public navCtrl: NavController) {
     this.pages = [
-      { title: 'Admin', component: AdminPage },
-      { title: 'Results', component: ResultsPage },
-      { title: 'Nominees', component: NomineesPage }
+      {title: 'Admin', component: AdminPage},
+      {title: 'Voting', component: VotingPage},
+      {title: 'Nominees', component: NomineesPage},
+      {title: 'Results', component: ResultsPage}
     ];
   }
 

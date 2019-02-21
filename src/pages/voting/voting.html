@@ -1,0 +1,86 @@
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>voting</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+  <div class="date-time">
+
+    <ion-item>
+      <ion-label>Start date</ion-label>
+      <ion-datetime display-format="MMMM YYYY" min="2016" max="2099-10-31" [(ngModel)]="startDate"
+                    placeholder="Select Date"></ion-datetime>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>End date</ion-label>
+      <ion-datetime display-format="MMMM YYYY" min="2016" max="2099-10-31" [(ngModel)]="endDate"
+                    placeholder="Select Date"></ion-datetime>
+    </ion-item>
+
+    <button class="adminbutton" color="light-green" ion-button (click)="setStartEnd()">Set Voting Period</button>
+
+  </div>
+
+  <ion-grid class="sizer">
+    <ion-row>
+      <ion-col>
+        <ion-item>
+          <ion-label color="norm-green" stacked>Number of Voter Codes to generate</ion-label>
+          <ion-input type="number" [(ngModel)]="count">Select File
+          </ion-input>
+        </ion-item>
+      </ion-col>
+      <ion-col class="upload" text-center>
+        <button color="light-green" ion-button (click)="generate()">Generate Codes</button>
+        <button color="light-green" ion-button (click)="getExisting()">Get Existing Codes</button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+
+  <div>
+    <ion-grid>
+
+      <ion-col>
+
+        <ion-row>
+
+          <ion-grid class="sizer">
+            <ion-row>
+              <ion-col>
+                <ion-item>
+                  <ion-label color="norm-green" floating>Add Category</ion-label>
+                  <ion-input [(ngModel)]="category"></ion-input>
+                </ion-item>
+              </ion-col>
+              <ion-col class="upload" text-center>
+                <button color="light-green" ion-button (click)="addCategory()">Add Category</button>
+                <button class="adminbutton" color="light-green" ion-button (click)="setDefaults()">
+                  Set Default Categories
+                </button>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+
+        </ion-row>
+
+
+        <ion-row *ngFor="let c of categories" class="add-category">
+          <button class="delete" (click)="deleteCategory(c)" ion-button color="danger" clear icon-only>
+            <ion-icon name='trash'></ion-icon>
+          </button>
+          {{ c }}
+        </ion-row>
+
+      </ion-col>
+
+    </ion-grid>
+  </div>
+
+
+</ion-content>
