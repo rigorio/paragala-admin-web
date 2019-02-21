@@ -136,7 +136,7 @@ export class NomineesPage {
   delete(id: any) {
     console.log("what");
     let alert = this.alertCtrl.create({
-      title: 'Are you sure you want to start over?',
+      title: 'Are you sure you want to delete this nominee?',
       buttons: [
         {
           text: 'No',

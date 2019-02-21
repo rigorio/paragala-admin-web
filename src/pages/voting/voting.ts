@@ -6,6 +6,7 @@ import {Host} from "../Host";
 import {Response} from "../Response";
 import {Storage} from "@ionic/storage";
 import {Angular5Csv} from "angular5-csv/dist/Angular5-csv";
+import {DatePipe} from "@angular/common";
 
 @Component({
   selector: 'page-voting',
@@ -15,6 +16,7 @@ export class VotingPage {
 
   startDate: any;
   endDate: any;
+  min: any;
 
   category: string;
   categories: string[];
@@ -26,7 +28,26 @@ export class VotingPage {
               private alertCtrl: AlertController,
               private http: HttpClient,
               private loadingController: LoadingController,
-              private alertController: AlertController) {
+              private alertController: AlertController,
+              private datePipe: DatePipe) {
+
+
+    // console.log(message);
+    // let dd = today.getDate();
+    // let mm = today.getMonth() + 1; //January is 0!
+    // let yyyy = today.getFullYear();
+    // let d: any;
+    // let m: any;
+    //
+    // if (dd < 10) {
+    //   d = '0' + dd;
+    // }
+    //
+    // if (mm < 10) {
+    //   m = '0' + mm;
+    // }
+
+    // this.mi
 
     this.categories = [];
 
@@ -42,6 +63,16 @@ export class VotingPage {
       .then(response => {
         console.log(response);
         this.startDate = (response.message);
+        let today = new Date();
+        let message = this.datePipe.transform(today, 'yyyy-MM-dd');
+
+        this.min = message;
+        console.log(this.min);
+        let b = message < this.startDate;
+        console.log(b);
+        this.min = b ? message: this.startDate;
+        // console.log(this.min);
+        console.log(this.min);
       });
     this.http.get<Response>(dateUrl + "/end").pipe().toPromise()
       .then(response => {
@@ -96,7 +127,7 @@ export class VotingPage {
   deleteCategory(c: string) {
 
     let alert = this.alertCtrl.create({
-      title: 'Are you sure you want to start over?',
+      title: 'Are you sure you want to delete this category?',
       buttons: [
         {
           text: 'No',
@@ -109,7 +140,6 @@ export class VotingPage {
           text: 'Yes',
           handler: () => {
             console.log('Confirm Okay');
-
 
 
             this.getToken().then(token => {

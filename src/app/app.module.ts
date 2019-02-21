@@ -14,6 +14,7 @@ import {VotersPage} from "../pages/voters/voters";
 import {AdminPage} from "../pages/admin/admin";
 import {LoginPage} from "../pages/login/login";
 import {VotingPage} from "../pages/voting/voting";
+import {DatePipe} from "@angular/common";
 
 @NgModule({
   declarations: [
@@ -46,6 +47,7 @@ import {VotingPage} from "../pages/voting/voting";
   providers: [
     StatusBar,
     SplashScreen,
+    DatePipe,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]
 })

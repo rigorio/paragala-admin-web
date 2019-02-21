@@ -22,7 +22,12 @@ export class AdminPage {
   confirmPassword: any;
   map = new Map();
   superAdmin: any;
-
+  owners: Array<{ id: number; username: string; superAdmin: boolean; }> = [];
+  ownerUsername: any;
+  ownerSuperAdmin: any;
+  password1: any;
+  password2: any;
+  password3: any;
 
 
   constructor(public navCtrl: NavController,
@@ -33,7 +38,14 @@ export class AdminPage {
               private loadingController: LoadingController,
               private alertController: AlertController) {
 
+    this.getToken().then(token => {
+      let url = Host.host + "/api/users?token=" + token;
+      this.http.get<Response>(url).pipe().toPromise().then(response => {
+        console.log(response);
+        this.owners = response.message;
+      });
 
+    })
   }
 
   private getToken() {
@@ -117,4 +129,119 @@ export class AdminPage {
     this.navCtrl.setRoot(LoginPage)
   }
 
+  saveDetails() {
+
+
+  }
+
+  deleteOwner(id: number) {
+
+    const alert = this.alertController.create({
+      title: 'Enter password',
+      inputs: [
+        {
+          name: 'password',
+          type: 'password',
+          placeholder: 'password'
+        }
+      ],
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel',
+          cssClass: 'secondary',
+          handler: () => {
+            console.log('Confirm Cancel');
+          }
+        }, {
+          text: 'Ok',
+          handler: data => {
+            this.getToken().then(token => {
+              let url = Host.host + "/api/users/" + id + "?password=" + data.password + "&token=" + token;
+              this.http.delete<Response>(url).pipe().toPromise().then(response => {
+                let alert = this.alertCtrl.create({
+                  title: response['status'],
+                  subTitle: response['message'],
+                  buttons: ['Ok']
+                });
+                // add loading
+                alert.present();
+                this.getToken().then(token => {
+                  let url = Host.host + "/api/users?token=" + token;
+                  this.http.get<Response>(url).pipe().toPromise().then(response => {
+                    console.log(response);
+                    this.owners = response.message;
+                  });
+
+                })
+              })
+            });
+            console.log('Confirm Ok');
+          }
+        }
+      ]
+    });
+
+    alert.present();
+
+
+  }
+
+  changePassword() {
+    if (this.password1 == null || this.password2 == null || this.password3 == null) {
+      let alert = this.alertCtrl.create({
+        title: "Please fill in all details",
+        buttons: ['Ok']
+      });
+      // add loading
+      alert.present();
+      return;
+    }
+
+    console.log(this.password2);
+    console.log(this.password3);
+    console.log("what");
+    let b = this.password2 != this.password3;
+    console.log(b);
+    if (b) {
+      let alert = this.alertCtrl.create({
+        title: "Passwords did not match",
+        buttons: ['Ok']
+      });
+      // add loading
+      alert.present();
+      return;
+    }
+
+    this.getToken().then(token => {
+      let url = Host.host + "/api/users/password?token=" + token;
+      let map = new TSMap();
+      map.set('oldPassword', this.password1);
+      map.set('newPassword', this.password2);
+      let message = map.toJSON();
+
+      const httpOptions = {
+        headers: new HttpHeaders({
+          'Content-Type': 'application/json'
+        })
+      };
+
+      this.http.post<Response>(url, message, httpOptions).pipe().toPromise().then(response=> {
+        console.log(response);
+        let alert = this.alertCtrl.create({
+          title: response.status,
+          subTitle: response.message,
+          buttons: ['Ok']
+        });
+        // add loading
+        alert.present();
+
+
+
+      })
+
+    })
+
+
+  }
 }
