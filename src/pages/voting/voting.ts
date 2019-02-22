@@ -216,6 +216,16 @@ export class VotingPage {
       this.http.post<Response>(Host.host + "/api/date?token=" + token, message, httpOptions).pipe().toPromise().then(response => {
         console.log(response);
         loading.dismissAll();
+        if (response.status == "Failed") {
+          let alert = this.alertCtrl.create({
+            title: response['status'],
+            subTitle: response['message'],
+            buttons: ['Ok']
+          });
+          // add loading
+          alert.present();
+          return;
+        }
       }).then(_ => {
         let dateUrl = Host.host + "/api/date";
         this.http.get<Response>(dateUrl + "/start").pipe().toPromise()
