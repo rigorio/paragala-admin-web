@@ -70,7 +70,7 @@ export class VotingPage {
         console.log(this.min);
         let b = message < this.startDate;
         console.log(b);
-        this.min = b ? message: this.startDate;
+        this.min = b ? message : this.startDate;
         // console.log(this.min);
         console.log(this.min);
       });
@@ -248,6 +248,8 @@ export class VotingPage {
     return this.storage.get("paragala-token");
   }
 
+  codes: string[] = [];
+
   generate() {
     if (this.count == null) {
       let alert = this.alertCtrl.create({
@@ -264,8 +266,8 @@ export class VotingPage {
       console.log(response);
       if (response.status == "Success") {
         console.log(response.message);
-        let codes = response.message;
-        new Angular5Csv(codes, 'voter-codes');
+        this.codes = response.message;
+        new Angular5Csv(this.codes, 'voter-codes');
       } else {
         let alert = this.alertCtrl.create({
           title: 'A problem was encountered while generating the codes',

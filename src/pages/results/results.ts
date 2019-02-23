@@ -34,7 +34,7 @@ export class ResultsPage {
     let cateUrl = Host.host + "/api/data/categories";
     this.http.get<Response>(cateUrl).pipe().toPromise().then(response => {
       console.log(response.status);
-      this.categories = response.message
+      this.categories = response.message;
       this.categories.push("All");
     });
 
@@ -57,7 +57,7 @@ export class ResultsPage {
   }
 
   download() {
-    new Angular5Csv(this.results, "kwan");
+    new Angular5Csv(this.results, "results");
   }
 
   getToken() {
