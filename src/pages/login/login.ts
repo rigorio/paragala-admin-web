@@ -6,6 +6,7 @@ import {HttpClient, HttpErrorResponse, HttpHeaders, HttpResponse} from "@angular
 import {Response} from "../Response"
 import {HomePage} from "../home/home";
 import {Host} from "../Host";
+import {PasswordPage} from "../password/password";
 
 @Component({
   selector: 'page-login',
@@ -80,4 +81,7 @@ export class LoginPage {
     return this.http.post<Response>(url, message, httpOptions);
   }
 
+  reset() {
+    this.navCtrl.push(PasswordPage);
+  }
 }

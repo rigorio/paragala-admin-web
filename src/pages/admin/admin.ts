@@ -22,7 +22,7 @@ export class AdminPage {
   confirmPassword: any;
   map = new Map();
   superAdmin: any;
-  owners: Array<{ id: number; username: string; superAdmin: boolean; }> = [];
+  users: Array<{ id: number; username: string; superAdmin: boolean; }> = [];
   ownerUsername: any;
   ownerSuperAdmin: any;
   password1: any;
@@ -42,7 +42,7 @@ export class AdminPage {
       let url = Host.host + "/api/users?token=" + token;
       this.http.get<Response>(url).pipe().toPromise().then(response => {
         console.log(response);
-        this.owners = response.message;
+        this.users = response.message;
       });
 
     })
@@ -125,8 +125,30 @@ export class AdminPage {
 
 
   logout() {
-    this.storage.remove("paragala-token");
-    this.navCtrl.setRoot(LoginPage)
+    console.log("what");
+    let alert = this.alertCtrl.create({
+      title: 'Confirm Logout',
+      buttons: [
+        {
+          text: 'No',
+          role: 'cancel',
+          cssClass: 'secondary',
+          handler: (blah) => {
+            console.log('Confirm Cancel: blah');
+          }
+        }, {
+          text: 'Yes',
+          handler: () => {
+            console.log('Confirm Okay');
+            this.storage.remove("paragala-token");
+            this.navCtrl.setRoot(LoginPage)
+          }
+        }
+      ]
+    });
+
+    alert.present();
+
   }
 
   saveDetails() {
@@ -134,7 +156,7 @@ export class AdminPage {
 
   }
 
-  deleteOwner(id: number) {
+  deleteUser(id: number) {
 
     const alert = this.alertController.create({
       title: 'Enter password',
@@ -170,7 +192,7 @@ export class AdminPage {
                   let url = Host.host + "/api/users?token=" + token;
                   this.http.get<Response>(url).pipe().toPromise().then(response => {
                     console.log(response);
-                    this.owners = response.message;
+                    this.users = response.message;
                   });
 
                 })

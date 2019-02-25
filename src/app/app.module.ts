@@ -15,6 +15,7 @@ import {AdminPage} from "../pages/admin/admin";
 import {LoginPage} from "../pages/login/login";
 import {VotingPage} from "../pages/voting/voting";
 import {DatePipe} from "@angular/common";
+import {PasswordPage} from "../pages/password/password";
 
 @NgModule({
   declarations: [
@@ -25,7 +26,8 @@ import {DatePipe} from "@angular/common";
     ResultsPage,
     VotersPage,
     AdminPage,
-    VotingPage
+    VotingPage,
+    PasswordPage
   ],
   imports: [
     BrowserModule,
@@ -42,7 +44,8 @@ import {DatePipe} from "@angular/common";
     ResultsPage,
     VotersPage,
     AdminPage,
-    VotingPage
+    VotingPage,
+    PasswordPage
   ],
   providers: [
     StatusBar,

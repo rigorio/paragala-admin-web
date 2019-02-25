@@ -8,53 +8,48 @@
 
 
 <ion-content padding>
-  <div>
-    <ion-item class="sizer">
-      <ion-label color="norm-green" floating>Email</ion-label>
-      <ion-input [(ngModel)]="email"></ion-input>
-    </ion-item>
-    <ion-item class="sizer">
-      <ion-label color="norm-green" floating>Password</ion-label>
-      <ion-input type="password" [(ngModel)]="password"></ion-input>
-    </ion-item>
-    <ion-item class="sizer">
-      <ion-label color="norm-green" floating>Confirm Password</ion-label>
-      <ion-input type="password" [(ngModel)]="confirmPassword"></ion-input>
-    </ion-item>
-    <ion-item class="sizer">
-      <ion-label color="norm-green" floating>Current Admin Password</ion-label>
-      <ion-input type="password" [(ngModel)]="currentAdminPassword"></ion-input>
-    </ion-item>
-    <ion-item class="sizer">
-      <ion-label>Level of Access</ion-label>
-      <ion-select placeholder="Select level" [(ngModel)]="superAdmin">
-        <ion-option value="True">Admin</ion-option>
-        <ion-option value="False">Officer</ion-option>
-      </ion-select>
-    </ion-item>
-    <button class="adminbutton" color="light-green" ion-button (click)="createAdmin()">Create Admin</button>
 
-    <ion-item class="sizer">
-      <ion-label color="norm-green" floating>Current Password</ion-label>
-      <ion-input type="password" [(ngModel)]="password1"></ion-input>
-    </ion-item>
-    <ion-item class="sizer">
-      <ion-label color="norm-green" floating>New Password</ion-label>
-      <ion-input type="password" [(ngModel)]="password2"></ion-input>
-    </ion-item>
-    <ion-item class="sizer">
-      <ion-label color="norm-green" floating>Confirm New Password</ion-label>
-      <ion-input type="password" [(ngModel)]="password3"></ion-input>
-    </ion-item>
-    <button class="adminbutton" color="light-green" ion-button (click)="changePassword()">Change Password</button>
+  <ion-item class="sizer">
+    <ion-label color="norm-green" floating>Email</ion-label>
+    <ion-input [(ngModel)]="email"></ion-input>
+  </ion-item>
+  <ion-item class="sizer">
+    <ion-label color="norm-green" floating>Password</ion-label>
+    <ion-input type="password" [(ngModel)]="password"></ion-input>
+  </ion-item>
+  <ion-item class="sizer">
+    <ion-label color="norm-green" floating>Confirm Password</ion-label>
+    <ion-input type="password" [(ngModel)]="confirmPassword"></ion-input>
+  </ion-item>
+  <ion-item class="sizer">
+    <ion-label color="norm-green" floating>Current Admin Password</ion-label>
+    <ion-input type="password" [(ngModel)]="currentAdminPassword"></ion-input>
+  </ion-item>
+  <ion-item class="sizer">
+    <ion-label>Level of Access</ion-label>
+    <ion-select placeholder="Select level" [(ngModel)]="superAdmin">
+      <ion-option value="True">Admin</ion-option>
+      <ion-option value="False">Officer</ion-option>
+    </ion-select>
+  </ion-item>
+  <button class="adminbutton" color="light-green" ion-button (click)="createAdmin()">Create Admin</button>
 
-    <button class="logout" ion-button color="danger" (click)="logout()" item-right
-            style="text-align:right;">
-      Logout
-    </button>
-  </div>
+  <ion-item class="sizer">
+    <ion-label color="norm-green" floating>Current Password</ion-label>
+    <ion-input type="password" [(ngModel)]="password1"></ion-input>
+  </ion-item>
+  <ion-item class="sizer">
+    <ion-label color="norm-green" floating>New Password</ion-label>
+    <ion-input type="password" [(ngModel)]="password2"></ion-input>
+  </ion-item>
+  <ion-item class="sizer">
+    <ion-label color="norm-green" floating>Confirm New Password</ion-label>
+    <ion-input type="password" [(ngModel)]="password3"></ion-input>
+  </ion-item>
+  <button class="adminbutton" color="light-green" ion-button (click)="changePassword()">Change Password</button>
 
-  <ion-grid>
+
+  <ion-grid class="burboski" text-center>
     <ion-row>
       <ion-col>
         <b>
@@ -75,24 +70,25 @@
 
       </ion-col>
     </ion-row>
-    <ion-row class="nominees" *ngFor="let owner of owners">
+    <ion-row class="nominees" *ngFor="let user of users">
       <ion-col>
-        {{ owner.id }}
+        {{ user.id }}
       </ion-col>
       <ion-col>
-      {{ owner.username }}
+        {{ user.username }}
       </ion-col>
       <ion-col>
-      {{owner.superAdmin?'Admin':'Officer'}}
+        {{user.superAdmin ? 'Admin' : 'Officer'}}
       </ion-col>
       <ion-col>
-        <button class="delete" (click)="deleteOwner(owner.id)" ion-button color="danger" clear icon-only>
+        <button class="delete" (click)="deleteUser(user.id)" ion-button color="danger" clear icon-only>
           <ion-icon name='trash'></ion-icon>
         </button>
       </ion-col>
     </ion-row>
   </ion-grid>
-
-  <button class="adminbutton" color="light-green" ion-button (click)="saveDetails()">Save</button>
-
+  <button class="logout" ion-button color="danger" (click)="logout()" item-right
+          style="text-align:right;">
+    Logout
+  </button>
 </ion-content>
