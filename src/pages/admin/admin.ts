@@ -23,6 +23,7 @@ export class AdminPage {
   map = new Map();
   superAdmin: any;
   users: Array<{ id: number; username: string; superAdmin: boolean; }> = [];
+  showGrid: boolean = false;
   ownerUsername: any;
   ownerSuperAdmin: any;
   password1: any;
@@ -43,6 +44,10 @@ export class AdminPage {
       this.http.get<Response>(url).pipe().toPromise().then(response => {
         console.log(response);
         this.users = response.message;
+        let length1 = this.users.length;
+        if (length1 > 1) {
+          this.showGrid = true;
+        }
       });
 
     })
@@ -248,7 +253,7 @@ export class AdminPage {
         })
       };
 
-      this.http.post<Response>(url, message, httpOptions).pipe().toPromise().then(response=> {
+      this.http.post<Response>(url, message, httpOptions).pipe().toPromise().then(response => {
         console.log(response);
         let alert = this.alertCtrl.create({
           title: response.status,
@@ -257,7 +262,6 @@ export class AdminPage {
         });
         // add loading
         alert.present();
-
 
 
       })
