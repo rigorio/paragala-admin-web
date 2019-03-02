@@ -2,6 +2,18 @@ page-admin {
 
 }
 
+ion-header ion-icon.back-button-icon.icon {
+  color: #fff;
+}
+
+ion-header ion-navbar {
+  color: #fff;
+}
+
+.toolbar-background {
+  background-color: #327600;
+}
+
 .adminbutton {
   margin: 10px auto auto;
   display: block;
@@ -18,7 +30,7 @@ page-admin {
 }
 
 .date-time {
-  width: 50%;
+  width: 100%;
   margin: auto;
   display: block;
 }

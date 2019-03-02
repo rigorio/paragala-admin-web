@@ -1,11 +1,61 @@
 <ion-header>
-  <ion-navbar>
-    <button class="but" ion-button color="light-green" *ngFor="let p of pages" (click)="openPage(p)">
-      {{p.title}}
-    </button>
-  </ion-navbar>
+  <img class="banner" src="../../assets/imgs/PARAGALA%20LOGO.png">
 </ion-header>
+<ion-navbar>
 
-<ion-content padding>
-  <img src="../../assets/imgs/logo.png" height='600' width='600'>
+</ion-navbar>
+<ion-content padding text-center>
+
+
+  <!--<img src="../../assets/imgs/admin_icon.png"> Admin-->
+
+  <ion-grid class="the-grid">
+    <ion-row>
+      <ion-col>
+
+        <button (click)="admin()" class="booton">
+          <img class="adminicon pahirap" (click)="hey()" src="../../assets/imgs/admin_icon.png"/>
+          <h3 class="kolay">
+            Admin
+          </h3>
+        </button>
+
+      </ion-col>
+      <ion-col>
+
+        <button (click)="voting()" class="booton">
+          <img class="adminicon pahirap" (click)="hey()" src="../../assets/imgs/voting_icon.png"/>
+          <h3 class="kolay">
+            Voting
+          </h3>
+        </button>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+
+        <button (click)="nominees()" class="booton">
+          <img class="adminicon pahirap" (click)="hey()" src="../../assets/imgs/nominees_icon.png"/>
+          <h3 class="kolay">
+            Nominees
+          </h3>
+        </button>
+      </ion-col>
+      <ion-col>
+
+        <button (click)="results()" class="booton">
+          <img class="adminicon pahirap" (click)="hey()" src="../../assets/imgs/results_icon.png"/>
+          <h3 class="kolay">
+            Results
+          </h3>
+        </button>
+      </ion-col>
+    </ion-row>
+
+
+  </ion-grid>
+
+
+  <!--<div class="hopake"></div>-->
+  <!--<img src="../../assets/imgs/logo.png" height='600' width='600'>-->
 </ion-content>

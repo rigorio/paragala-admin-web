@@ -29,4 +29,23 @@ export class HomePage {
     this.navCtrl.push(page.component);
   }
 
+  hey() {
+    console.log("heyyy");
+  }
+
+  admin() {
+    this.navCtrl.push(AdminPage);
+  }
+
+  voting() {
+    this.navCtrl.push(VotingPage);
+  }
+
+  nominees() {
+    this.navCtrl.push(NomineesPage);
+  }
+
+  results() {
+    this.navCtrl.push(ResultsPage);
+  }
 }

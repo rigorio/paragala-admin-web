@@ -1,8 +1,20 @@
 page-nominees {
 
 }
+
+.nominees-bg {
+  padding-left: 100px;
+  padding-right: 100px;
+}
+
 .sizer {
   width: 50%;
+  margin: auto;
+  display: block;
+}
+
+.nominee-size {
+  width: 100%;
   margin: auto;
   display: block;
 }
@@ -21,4 +33,16 @@ ion-col {
   border-top: solid black;
   border-width: thin;
   //border: 1px;
+}
+
+.nominee-button-size {
+  width: 50%;
+  margin: auto;
+  display: block;
+}
+
+.kwen {
+  height: 100%;
+  display: block;
+  vertical-align: middle;
 }

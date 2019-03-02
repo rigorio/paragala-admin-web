@@ -2,9 +2,57 @@ page-home {
 
 }
 
-img{
-  height: 70vh;
-  width: auto;
+//img {
+//  height: 70vh;
+//  width: auto;
+//  margin: auto;
+//  display: block;
+//}
+
+.booton {
+  background-color: Transparent;
+  background-repeat:no-repeat;
+  border: none;
+  cursor:pointer;
+  overflow: hidden;
+  outline:none;
+}
+
+.banner {
+  //height: 100%;
+  max-height: 200px;
+  margin: auto auto auto 0;
+  padding: 10px;
+}
+
+.kolay {
+  color: #43890D;
+}
+
+.pahirap {
+  width: 60%;
+  height: 60%;
+}
+
+.adminicon {
+}
+
+.votingicon {
+
+}
+
+.nomineesicon {
+
+}
+
+.resultsicon {
+
+}
+
+.mac {
   margin: auto;
-  display: block;
+}
+
+.the-grid {
+  width: 60%;
 }
