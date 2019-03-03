@@ -6,30 +6,33 @@
 -->
 <ion-header>
 
-  <ion-navbar color="norm-green">
-    <ion-title>Login</ion-title>
-  </ion-navbar>
+  <!--<ion-navbar color="norm-green">-->
+  <!--<ion-title>Login</ion-title>-->
+  <!--</ion-navbar>-->
 
 </ion-header>
 
 
-<ion-content padding>
+<ion-content padding text-center class="kwann">
+  <div >
+
+    <div class="login">
+      <img src="../../assets/imgs/logo.png" class="mawala">
 
 
-  <div class="login">
+      <ion-item>
+        <ion-label color="norm-green" floating>Username</ion-label>
+        <ion-input [(ngModel)]="username"></ion-input>
+      </ion-item>
 
-    <ion-item>
-      <ion-label color="norm-green" floating>Username</ion-label>
-      <ion-input [(ngModel)]="username"></ion-input>
-    </ion-item>
+      <ion-item>
+        <ion-label color="norm-green" floating>Password</ion-label>
+        <ion-input type="password" [(ngModel)]="password"></ion-input>
+      </ion-item>
 
-    <ion-item>
-      <ion-label color="norm-green" floating>Password</ion-label>
-      <ion-input type="password" [(ngModel)]="password"></ion-input>
-    </ion-item>
-
-    <button color="light-green" ion-button (click)="login()">Login</button>
-    <button color="light-green" ion-button (click)="reset()">Forgot Password</button>
+      <button class="kwan4" color="light-green" ion-button (click)="login()">Login</button>
+      <button class="kwan4" color="light-green" ion-button (click)="reset()">Forgot Password</button>
+    </div>
   </div>
 
 </ion-content>
