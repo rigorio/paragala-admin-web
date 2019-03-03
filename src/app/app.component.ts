@@ -28,7 +28,7 @@ export class MyApp {
     public splashScreen: SplashScreen
   ) {
     storage.clear();
-    storage.set('paragala-token', '690889c5-7b80-44a9-ba05-4ff79919422f');
+    storage.set('paragala-token', '0804a498-46d7-4c9a-90ff-3a7465f8e61a');
 
     this.initializeApp();
   }
