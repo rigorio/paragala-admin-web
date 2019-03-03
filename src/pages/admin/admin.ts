@@ -17,7 +17,7 @@ export class AdminPage {
   }
 
   email: any;
-  password: any;
+  password: string;
   currentAdminPassword: any;
   confirmPassword: any;
   map = new Map();
@@ -29,6 +29,8 @@ export class AdminPage {
   password1: any;
   password2: any;
   password3: any;
+  soperAd: boolean = true;
+  user: { id: number; username: string; superAdmin: boolean; };
 
 
   constructor(public navCtrl: NavController,
@@ -38,6 +40,12 @@ export class AdminPage {
               private http: HttpClient,
               private loadingController: LoadingController,
               private alertController: AlertController) {
+
+    this.user = {
+      id: 1,
+      username: 'placeholder',
+      superAdmin: true
+    };
 
     this.getToken().then(token => {
       let url = Host.host + "/api/users?token=" + token;
@@ -49,6 +57,11 @@ export class AdminPage {
           this.showGrid = true;
         }
       });
+
+      this.http.get<Response>(Host.host + "/api/users/user?token=" + token).pipe().toPromise().then(response => {
+        console.log(response);
+        this.user = response.message;
+      })
 
     })
   }
@@ -76,6 +89,16 @@ export class AdminPage {
     if (this.password != this.confirmPassword) {
       let alert = this.alertCtrl.create({
         title: "Passwords did not match!",
+        buttons: ['Ok']
+      });
+      // add loading
+      alert.present();
+      return;
+    }
+
+    if (this.password.length <6) {
+      let alert = this.alertCtrl.create({
+        title: "Password must be at least 6 characters",
         buttons: ['Ok']
       });
       // add loading

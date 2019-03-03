@@ -27,11 +27,6 @@ export class LoginPage {
               private http: HttpClient,
               private loadingController: LoadingController) {
 
-    storage.get("paragala-token").then(value => {
-      console.log(value);
-      if (value !== null)
-        this.navCtrl.setRoot(HomePage)
-    })
 
 
   }
