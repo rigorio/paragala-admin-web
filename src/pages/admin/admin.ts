@@ -53,7 +53,7 @@ export class AdminPage {
         console.log(response);
         this.users = response.message;
         let length1 = this.users.length;
-        if (length1 > 1) {
+        if (length1 > 0) {
           this.showGrid = true;
         }
       });
