@@ -2,7 +2,16 @@
 
   <img class="banner" src="../../assets/imgs/PARAGALA%20LOGO.png">
   <ion-navbar>
-    Admin
+    <ion-row>
+      <ion-col class="headerr">
+        Admin
+      </ion-col>
+      <ion-col>
+        <button class="logout" ion-button color="danger" (click)="logout()">
+          Logout
+        </button>
+      </ion-col>
+    </ion-row>
   </ion-navbar>
 
 </ion-header>
@@ -42,7 +51,7 @@
             <ion-option value="False">Officer</ion-option>
           </ion-select>
         </ion-item>
-        <button class="adminbutton" color="light-green" ion-button (click)="createAdmin()">Create Admin</button>
+        <button class="adminbutton" color="light-green" ion-button (click)="createAdmin()">Create Account</button>
 
 
       </ion-col>
@@ -105,10 +114,6 @@
             </ion-col>
           </ion-row>
         </ion-grid>
-        <button class="logout" ion-button color="danger" (click)="logout()" item-right
-                style="text-align:right;">
-          Logout
-        </button>
 
 
       </ion-col>

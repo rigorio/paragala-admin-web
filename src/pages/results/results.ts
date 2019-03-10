@@ -1,10 +1,11 @@
 import {Component} from '@angular/core';
-import {IonicPage, NavController, NavParams} from 'ionic-angular';
+import {AlertController, IonicPage, NavController, NavParams} from 'ionic-angular';
 import {HttpClient} from '@angular/common/http';
 import {Response} from "../Response";
 import {Storage} from "@ionic/storage";
 import {Host} from "../Host";
 import {Angular5Csv} from "angular5-csv/dist/Angular5-csv";
+import {LoginPage} from "../login/login";
 
 
 @Component({
@@ -26,6 +27,7 @@ export class ResultsPage {
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
               private storage: Storage,
+              private alertCtrl: AlertController,
               private http: HttpClient) {
 
     this.categories = [];
@@ -97,4 +99,32 @@ export class ResultsPage {
       this.results = response.message;
     })
   }
+
+  logout() {
+    console.log("what");
+    let alert = this.alertCtrl.create({
+      title: 'Confirm Logout',
+      buttons: [
+        {
+          text: 'No',
+          role: 'cancel',
+          cssClass: 'secondary',
+          handler: (blah) => {
+            console.log('Confirm Cancel: blah');
+          }
+        }, {
+          text: 'Yes',
+          handler: () => {
+            console.log('Confirm Okay');
+            this.storage.remove("paragala-token");
+            this.navCtrl.setRoot(LoginPage)
+          }
+        }
+      ]
+    });
+
+    alert.present();
+
+  }
+
 }

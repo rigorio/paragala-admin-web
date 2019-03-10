@@ -1,10 +1,12 @@
 import {Component, ViewChild} from '@angular/core';
-import {Nav, NavController} from 'ionic-angular';
+import {AlertController, Nav, NavController} from 'ionic-angular';
 import {ResultsPage} from "../results/results";
 import {NomineesPage} from "../nominees/nominees";
 import {VotersPage} from "../voters/voters";
 import {AdminPage} from "../admin/admin";
 import {VotingPage} from "../voting/voting";
+import {LoginPage} from "../login/login";
+import {Storage} from "@ionic/storage";
 
 @Component({
   selector: 'page-home',
@@ -14,7 +16,9 @@ export class HomePage {
 
   pages: Array<{ title: string, component: any }>;
 
-  constructor(public navCtrl: NavController) {
+  constructor(public navCtrl: NavController,
+              private storage: Storage,
+              private alertCtrl: AlertController) {
     this.pages = [
       {title: 'Admin', component: AdminPage},
       {title: 'Voting', component: VotingPage},
@@ -48,4 +52,32 @@ export class HomePage {
   results() {
     this.navCtrl.push(ResultsPage);
   }
+
+  logout() {
+    console.log("what");
+    let alert = this.alertCtrl.create({
+      title: 'Confirm Logout',
+      buttons: [
+        {
+          text: 'No',
+          role: 'cancel',
+          cssClass: 'secondary',
+          handler: (blah) => {
+            console.log('Confirm Cancel: blah');
+          }
+        }, {
+          text: 'Yes',
+          handler: () => {
+            console.log('Confirm Okay');
+            this.storage.remove("paragala-token");
+            this.navCtrl.setRoot(LoginPage)
+          }
+        }
+      ]
+    });
+
+    alert.present();
+
+  }
+
 }

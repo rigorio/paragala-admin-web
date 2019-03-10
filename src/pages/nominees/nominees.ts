@@ -6,6 +6,7 @@ import {Response} from "../Response"
 import {Storage} from "@ionic/storage";
 import {TSMap} from "typescript-map";
 import {Host} from "../Host";
+import {LoginPage} from "../login/login";
 
 
 @Component({
@@ -204,4 +205,32 @@ export class NomineesPage {
     });
 
   }
+
+  logout() {
+    console.log("what");
+    let alert = this.alertCtrl.create({
+      title: 'Confirm Logout',
+      buttons: [
+        {
+          text: 'No',
+          role: 'cancel',
+          cssClass: 'secondary',
+          handler: (blah) => {
+            console.log('Confirm Cancel: blah');
+          }
+        }, {
+          text: 'Yes',
+          handler: () => {
+            console.log('Confirm Okay');
+            this.storage.remove("paragala-token");
+            this.navCtrl.setRoot(LoginPage)
+          }
+        }
+      ]
+    });
+
+    alert.present();
+
+  }
+
 }

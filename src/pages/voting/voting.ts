@@ -7,6 +7,7 @@ import {Response} from "../Response";
 import {Storage} from "@ionic/storage";
 import {Angular5Csv} from "angular5-csv/dist/Angular5-csv";
 import {DatePipe} from "@angular/common";
+import {LoginPage} from "../login/login";
 
 @Component({
   selector: 'page-voting',
@@ -305,4 +306,32 @@ export class VotingPage {
 
 
   }
+
+  logout() {
+    console.log("what");
+    let alert = this.alertCtrl.create({
+      title: 'Confirm Logout',
+      buttons: [
+        {
+          text: 'No',
+          role: 'cancel',
+          cssClass: 'secondary',
+          handler: (blah) => {
+            console.log('Confirm Cancel: blah');
+          }
+        }, {
+          text: 'Yes',
+          handler: () => {
+            console.log('Confirm Okay');
+            this.storage.remove("paragala-token");
+            this.navCtrl.setRoot(LoginPage)
+          }
+        }
+      ]
+    });
+
+    alert.present();
+
+  }
+
 }
